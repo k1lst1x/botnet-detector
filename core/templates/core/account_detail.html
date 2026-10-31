@@ -1,0 +1,59 @@
+{% extends "core/base.html" %}{% load botnet %}
+{% block title %}@{{ acc.handle }}{% endblock %}
+{% block content %}
+<section class="head">
+  <div>
+    <p class="eyebrow">{{ acc.platform }} · метка: {{ acc.label }}{% if acc.true_group %} · {{ acc.true_group }}{% endif %}</p>
+    <h1>@{{ acc.handle }}</h1>
+    {% if acc.display_name %}<p class="muted">{{ acc.display_name }}</p>{% endif %}
+  </div>
+  <div class="riskbig {{ acc.risk|level }}"><span>риск</span><b>{{ acc.risk|pct }}</b></div>
+</section>
+
+<section class="stats">
+  <div class="stat"><span class="k">P(bot)</span><span class="v">{{ acc.bot_proba|pct }}</span></div>
+  <div class="stat"><span class="k">Isolation Forest</span><span class="v">{{ acc.anomaly_score|pct }}</span></div>
+  <div class="stat"><span class="k">сообщество</span><span class="v">{% if acc.community %}<a href="{% url 'community' acc.community.pk %}">#{{ acc.community.label }}</a>{% else %}—{% endif %}</span></div>
+  <div class="stat"><span class="k">DBSCAN</span><span class="v">{{ acc.dbscan_cluster|default_if_none:"—" }}</span></div>
+</section>
+
+<section class="card">
+  <h2>Почему так оценён</h2>
+  <p class="muted">Признаки, сильнее всего отклоняющиеся от медианы выборки (robust z-score).</p>
+  <ul class="explain">
+    {% for e in acc.explanation %}
+    <li><span class="mono">{{ e.feature }}</span><span>{{ e.value|num }} <span class="muted">vs медиана {{ e.median|num }}</span></span>
+      <span class="z {% if e.z > 0 %}up{% else %}down{% endif %}">{% if e.z > 0 %}+{% endif %}{{ e.z }}σ</span></li>
+    {% empty %}<li class="muted">Запустите анализ</li>{% endfor %}
+  </ul>
+</section>
+
+<div class="grid2">
+  <section class="card"><h2>Поведение и контент</h2>
+    <table class="tbl compact">{% for k, v in behavior %}<tr><td class="mono">{{ k }}</td><td>{{ v|num }}</td></tr>{% endfor %}</table>
+  </section>
+  <section class="card"><h2>Сетевые признаки</h2>
+    <table class="tbl compact">{% for k, v in network %}<tr><td class="mono">{{ k }}</td><td>{{ v|num }}</td></tr>{% endfor %}</table>
+  </section>
+</div>
+
+<section class="card">
+  <h2>Сильнейшие связи W(A,B)</h2>
+  <table class="tbl">
+    <thead><tr><th>аккаунт</th><th>W</th><th>text</th><th>time</th><th>url</th><th>hashtag</th><th>interaction</th></tr></thead>
+    {% for n in neighbours %}
+    <tr><td><a href="{% url 'account' n.other.handle %}">@{{ n.other.handle }}</a></td><td><b>{{ n.weight|num }}</b></td>
+      <td>{{ n.c.text|num }}</td><td>{{ n.c.time|num }}</td><td>{{ n.c.url|num }}</td><td>{{ n.c.hashtag|num }}</td><td>{{ n.c.interaction|num }}</td></tr>
+    {% empty %}<tr><td colspan="7" class="muted">Нет рёбер выше порога</td></tr>{% endfor %}
+  </table>
+</section>
+
+<section class="card">
+  <h2>Последние публикации</h2>
+  <ul class="posts">
+    {% for p in acc.posts.all|slice:":30" %}
+    <li><span class="mono muted">{{ p.created_at|date:"d.m H:i" }}{% if p.is_reply %} · reply{% endif %}{% if p.is_repost %} · repost{% endif %}</span><p>{{ p.text }}</p></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}

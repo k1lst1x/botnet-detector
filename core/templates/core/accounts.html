@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+{% block title %}Аккаунты{% endblock %}
+{% block content %}
+<section class="head">
+  <h1>Аккаунты</h1>
+  <form class="inline" method="get">
+    <input name="q" value="{{ q }}" placeholder="поиск @handle">
+    <select name="level">
+      <option value="">любой риск</option>
+      <option value="high" {% if level == 'high' %}selected{% endif %}>высокий</option>
+      <option value="medium" {% if level == 'medium' %}selected{% endif %}>средний</option>
+      <option value="low" {% if level == 'low' %}selected{% endif %}>низкий</option>
+    </select>
+    <button class="btn ghost">Фильтр</button>
+  </form>
+</section>
+<section class="card">
+  {% include "core/_accounts_table.html" with rows=page.object_list %}
+  <div class="pager">
+    {% if page.has_previous %}<a href="?q={{ q }}&level={{ level }}&page={{ page.previous_page_number }}">←</a>{% endif %}
+    <span class="muted">{{ page.number }} / {{ page.paginator.num_pages }}</span>
+    {% if page.has_next %}<a href="?q={{ q }}&level={{ level }}&page={{ page.next_page_number }}">→</a>{% endif %}
+  </div>
+</section>
+{% endblock %}

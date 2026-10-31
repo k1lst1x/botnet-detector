@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}{% load botnet %}
+{% block title %}Сообщества{% endblock %}
+{% block content %}
+<section class="head"><div><p class="eyebrow">Louvain на взвешенном графе координации</p><h1>Сообщества</h1></div></section>
+<div class="cards">
+  {% for c in items %}
+  <a class="card com" href="{% url 'community' c.pk %}">
+    <div class="row"><b>#{{ c.label }}</b><span class="risk {{ c.coordination_score|level }}">{{ c.coordination_score|pct }}</span></div>
+    <p class="muted">{{ c.size }} аккаунтов · плотность {{ c.density|num }} · ⌀W {{ c.mean_weight|num }}</p>
+    <div class="signals">{% for k, v in c.top_signals.items %}<span><i style="height: {{ v|pct }}"></i><em>{{ k }}</em></span>{% endfor %}</div>
+    <p class="mono small">{% for t in c.shared_hashtags|slice:":3" %}#{{ t }} {% endfor %}</p>
+  </a>
+  {% empty %}<div class="card empty">Сообществ пока нет — запустите анализ.</div>{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% load static %}<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Обзор{% endblock %} · BotNet Detector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'core/app.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="{% url 'dashboard' %}"><span class="dot"></span>botnet<span class="muted">/detector</span></a>
+  <nav>
+    {% with u=request.resolver_match.url_name %}
+    <a href="{% url 'dashboard' %}" class="{% if u == 'dashboard' %}on{% endif %}">Обзор</a>
+    <a href="{% url 'accounts' %}" class="{% if u == 'accounts' or u == 'account' %}on{% endif %}">Аккаунты</a>
+    <a href="{% url 'communities' %}" class="{% if u == 'communities' or u == 'community' %}on{% endif %}">Сообщества</a>
+    <a href="{% url 'graph' %}" class="{% if u == 'graph' %}on{% endif %}">Граф</a>
+    <a href="{% url 'data' %}" class="{% if u == 'data' %}on{% endif %}">Данные</a>
+    {% endwith %}
+  </nav>
+</header>
+<main>
+  {% for m in messages %}<div class="flash {{ m.tags }}">{{ m }}</div>{% endfor %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="foot mono">Синхронность — индикатор для проверки, а не доказательство автоматизации.</footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>

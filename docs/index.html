@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>botnet/detector — обнаружение координированных бот-сетей в Threads</title>
+  <meta name="description" content="Дипломный проект: ML и графовый анализ для выявления скоординированных групп аккаунтов в казахстанском и русскоязычном Threads.">
+  <meta property="og:title" content="botnet/detector — координированные бот-сети в Threads">
+  <meta property="og:description" content="Один аккаунт ≠ целая кампания. Поведение, контент и связи аккаунтов в одной системе.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="#"><span class="dot"></span>botnet<span class="muted">/detector</span></a>
+  <nav>
+    <a href="#problem">Проблема</a>
+    <a href="#method">Метод</a>
+    <a href="#mvp">MVP</a>
+    <a href="#experiments">Эксперименты</a>
+    <a class="pill" href="https://github.com/k1lst1x/botnet-detector">GitHub ↗</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <canvas id="net" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <p class="eyebrow">Дипломный проект · ML + графовый анализ · Threads KZ/RU</p>
+    <h1>Один аккаунт<h1>Один аккаунт —<br>не&nbsp;кампания.<br>nbsp;—<br>не<h1>Один аккаунт —<br>не&nbsp;кампания.<br>nbsp;кампания.<br><span class="accent">Сеть — да.</span></h1>
+    <p class="lead">Исследовательская система, которая ищет не отдельных ботов, а&nbsp;скоординированные группы: по&nbsp;поведению, контенту, времени и&nbsp;связям между аккаунтами.</p>
+    <div class="cta">
+      <a class="btn" href="#start">Запустить локально</a>
+      <a class="btn ghost" href="https://github.com/k1lst1x/botnet-detector">Исходный код</a>
+    </div>
+  </div>
+</section>
+
+<section id="problem" class="section">
+  <div class="label">01 — проблема</div>
+  <div class="cols2">
+    <div class="tile">
+      <span class="k mono">индивидуальный анализ</span>
+      <p>Аккаунт публикует 8–15 постов в день и не выглядит аномальным. Обычный классификатор оценит его как человека.</p>
+    </div>
+    <div class="tile dark">
+      <span class="k mono">групповое поведение</span>
+      <p>Десятки аккаунтов публикуют похожие тексты и одинаковые ссылки в короткие интервалы времени.</p>
+    </div>
+  </div>
+  <blockquote>Повышает ли анализ связей и синхронности качество обнаружения координированных групп?</blockquote>
+  <p class="note mono">Гипотеза: гибридный метод даёт лучшее групповое обнаружение, чем анализ только отдельных аккаунтов.</p>
+</section>
+
+<section id="method" class="section">
+  <div class="label">02 — метод в два уровня</div>
+  <ol class="flow">
+    <li><b>Сбор</b><span>Threads API, CSV, Kaggle / Cresci / TwiBot</span></li>
+    <li><b>Признаки</b><span>30 поведенческих, контентных и сетевых</span></li>
+    <li><b>P(bot)</b><span>XGBoost / CatBoost + Isolation Forest</span></li>
+    <li><b>Граф W(A,B)</b><span>взвешенные связи координации</span></li>
+    <li><b>Сообщества</b><span>Louvain и DBSCAN</span></li>
+    <li><b>Вывод</b><span>риск аккаунта + риск группы + объяснение</span></li>
+  </ol>
+
+  <div class="formula">
+    <p class="mono small muted-inv">связь между аккаунтами</p>
+    <p class="eq">W(A,B) = w₁·<i>Text</i> + w₂·<i>Time</i> + w₃·<i>URL</i> + w₄·<i>Hashtag</i> + w₅·<i>Interaction</i></p>
+    <div class="terms">
+      <div><b>TextSim</b><span>cosine TF-IDF / эмбеддингов</span></div>
+      <div><b>TimeSim</b><span>совпадения в окне Δt</span></div>
+      <div><b>URLSim</b><span>Jaccard ссылок</span></div>
+      <div><b>HashtagSim</b><span>Jaccard хэштегов</span></div>
+      <div><b>InteractionSim</b><span>общие адресаты</span></div>
+    </div>
+    <p class="mono small muted-inv">wᵢ ≥ 0, Σwᵢ = 1 · веса и порог ребра подбираются на валидации</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="label">03 — признаки</div>
+  <div class="cols3">
+    <div class="feat"><h3>Поведение</h3><p class="mono">posts_per_day · avg_post_interval · interval_cv · night_activity_ratio · hour_entropy · max_active_streak_h · repost_ratio · reply_ratio · burstiness</p></div>
+    <div class="feat"><h3>Контент</h3><p class="mono">duplicate_ratio · self_text_similarity · text_diversity · url_ratio · hashtag_ratio · interaction_rate</p></div>
+    <div class="feat"><h3>Сеть</h3><p class="mono">degree · clustering · reciprocity · pagerank · common_neighbors · sync_score · community_density · edge_stability</p></div>
+  </div>
+</section>
+
+<section id="mvp" class="section">
+  <div class="label">04 — работающий MVP</div>
+  <h2>Импорт → анализ → граф → объяснение.</h2>
+  <div class="shots">
+    <figure class="shot wide"><img src="assets/graph.jpg" alt="Интерактивный граф координации: кластеры кампаний выделены цветом" loading="lazy"><figcaption>Граф координации: каждая кампания — отдельный плотный кластер</figcaption></figure>
+    <figure class="shot"><img src="assets/dash.jpg" alt="Обзор: метрики экспериментов и топ сообществ" loading="lazy"><figcaption>Метрики A/B/C и топ сообществ</figcaption></figure>
+    <figure class="shot"><img src="assets/acc.jpg" alt="Карточка аккаунта с объяснением оценки" loading="lazy"><figcaption>Почему аккаунт получил такой риск</figcaption></figure>
+  </div>
+</section>
+
+<section id="experiments" class="section">
+  <div class="label">05 — эксперименты</div>
+  <div class="table">
+    <div class="tr th"><span></span><span>входные признаки</span><span>метрики</span></div>
+    <div class="tr"><span class="mono">A</span><span>профиль + поведение</span><span>Precision, Recall, F1, PR-AUC</span></div>
+    <div class="tr"><span class="mono">B</span><span>A + контент + сетевые</span><span>ΔF1, PR-AUC, устойчивость</span></div>
+    <div class="tr"><span class="mono">C</span><span>B + граф + сообщества</span><span>Group P/R, ARI, NMI</span></div>
+    <div class="tr"><span class="mono">D</span><span>обучение на X → проверка на Threads</span><span>падение качества, смещение</span></div>
+  </div>
+  <p class="note mono">Разбиение по аккаунтам и времени, контроль утечек. Модель с Twitter/X не переносится на Threads без проверки.</p>
+</section>
+
+<section class="section">
+  <div class="label">06 — позиционирование</div>
+  <div class="cols4">
+    <div class="cmp"><b>Botometer</b><span>сильный bot score, но один аккаунт и X</span></div>
+    <div class="cmp"><b>DeBot</b><span>временная синхронность, слабее семантика</span></div>
+    <div class="cmp"><b>BotSlayer</b><span>тренды и усиление тем в Twitter</span></div>
+    <div class="cmp ours"><b>Наш MVP</b><span>индивидуальные + групповые сигналы, Threads, объяснимые связи</span></div>
+  </div>
+</section>
+
+<section id="start" class="section">
+  <div class="label">07 — запуск</div>
+  <div class="cols2 start">
+    <div>
+      <h2>Пять команд до графа.</h2>
+      <p class="muted">Python 3.12 · Django 5.2 LTS · scikit-learn · XGBoost · NetworkX · PostgreSQL / SQLite</p>
+    </div>
+    <pre class="code"><code><span class="c"># установка</span>
+pip install -r requirements.txt
+python manage.py migrate
+<span class="c"># 300 аккаунтов, 5 кампаний</span>
+python manage.py generate_synthetic --reset
+python manage.py run_analysis --retrain
+python manage.py runserver</code></pre>
+  </div>
+</section>
+
+<section class="section">
+  <div class="label">08 — план, 12 недель</div>
+  <ol class="weeks">
+    <li><span class="mono">1–2</span>Литература, данные, требования</li>
+    <li><span class="mono">3–4</span>Сбор, очистка, признаки</li>
+    <li><span class="mono">5–6</span>ML baseline и подбор модели</li>
+    <li><span class="mono">7–8</span>Граф координации, сообщества</li>
+    <li><span class="mono">9–10</span>API, визуализация, интеграция</li>
+    <li><span class="mono">11–12</span>Эксперименты, анализ, защита</li>
+  </ol>
+</section>
+
+<footer class="foot">
+  <p class="mono">Синхронность — индикатор для проверки, а не доказательство автоматизации.</p>
+  <p class="muted">Дипломный проект · 2026 · <a href="https://github.com/k1lst1x/botnet-detector">GitHub</a></p>
+</footer>
+<script src="graph.js"></script>
+</body>
+</html>

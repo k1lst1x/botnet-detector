@@ -1,0 +1,4 @@
+handle,display_name,followers,following,created_at,label,true_group
+aigerim.k,Айгерим,540,310,2023-04-01T10:00:00Z,human,
+news_kz_01,Новости KZ,12,1900,2026-09-28T03:00:00Z,bot,campaign_demo
+news_kz_02,Новости KZ 2,8,2100,2026-09-28T03:05:00Z,bot,campaign_demo

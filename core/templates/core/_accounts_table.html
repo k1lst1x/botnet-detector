@@ -1,0 +1,16 @@
+{% load botnet %}
+<table class="tbl">
+  <thead><tr><th>аккаунт</th><th>метка</th><th>P(bot)</th><th>аномалия</th><th>сообщество</th><th>риск</th></tr></thead>
+  <tbody>
+  {% for a in rows %}
+  <tr>
+    <td><a href="{% url 'account' a.handle %}">@{{ a.handle }}</a>{% if a.n_posts %} <span class="muted">· {{ a.n_posts }}</span>{% endif %}</td>
+    <td><span class="tag {{ a.label }}">{{ a.label }}</span></td>
+    <td>{{ a.bot_proba|pct }}</td>
+    <td>{{ a.anomaly_score|pct }}</td>
+    <td>{% if a.community %}<a href="{% url 'community' a.community.pk %}">#{{ a.community.label }}</a>{% else %}<span class="muted">—</span>{% endif %}</td>
+    <td><span class="risk {{ a.risk|level }}">{{ a.risk|pct }}</span></td>
+  </tr>
+  {% empty %}<tr><td colspan="6" class="muted">Нет аккаунтов</td></tr>{% endfor %}
+  </tbody>
+</table>

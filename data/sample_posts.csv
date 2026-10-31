@@ -1,0 +1,5 @@
+handle,post_id,created_at,text,is_reply,is_repost,reply_to
+aigerim.k,p1,2026-10-01T12:03:00Z,Сегодня в Алматы опять смог #алматы,0,0,
+news_kz_01,p2,2026-10-01T12:00:10Z,Срочно! Тенге меняет всё https://breaking.info/1 #срочно,0,0,
+news_kz_02,p3,2026-10-01T12:01:40Z,‼️ Срочно! Тенге меняет всё https://breaking.info/1 #срочно,0,0,
+news_kz_02,p4,2026-10-01T12:09:00Z,@news_kz_01 полностью согласен!,1,0,news_kz_01

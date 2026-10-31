@@ -1,0 +1,72 @@
+{% extends "core/base.html" %}{% load botnet %}
+{% block content %}
+<section class="head">
+  <div>
+    <p class="eyebrow">Threads · KZ / RU</p>
+    <h1>Обнаружение координированных бот-сетей</h1>
+  </div>
+  <form method="post" action="{% url 'analyze' %}" class="inline">
+    {% csrf_token %}
+    <label>порог W <input name="threshold" type="number" step="0.05" min="0.05" max="0.95" value="0.30"></label>
+    <label>Δt, с <input name="window" type="number" step="60" min="60" value="600"></label>
+    <label class="check"><input type="checkbox" name="retrain" value="1"> переобучить</label>
+    <button class="btn">Запустить анализ</button>
+  </form>
+</section>
+
+<section class="stats">
+  <div class="stat"><span class="k">аккаунтов</span><span class="v">{{ n_accounts }}</span></div>
+  <div class="stat"><span class="k">постов</span><span class="v">{{ n_posts }}</span></div>
+  <div class="stat"><span class="k">высокий риск</span><span class="v accent">{{ n_high }}</span></div>
+  <div class="stat"><span class="k">средний риск</span><span class="v">{{ n_medium }}</span></div>
+  <div class="stat"><span class="k">сообществ</span><span class="v">{{ run.n_communities|default:"—" }}</span></div>
+  <div class="stat"><span class="k">рёбер W</span><span class="v">{{ run.n_edges|default:"—" }}</span></div>
+</section>
+
+{% if not run %}
+<div class="empty card">
+  <h2>Данных пока нет</h2>
+  <p>Загрузите CSV или сгенерируйте синтетический датасет на странице <a href="{% url 'data' %}">Данные</a>, затем запустите анализ.</p>
+</div>
+{% else %}
+<div class="grid2">
+  <section class="card">
+    <h2>Метрики · {{ run }} <span class="tag">{{ run.model_kind }}</span></h2>
+    {% if run.metrics %}
+    <table class="tbl">
+      <thead><tr><th>эксперимент</th><th>Precision</th><th>Recall</th><th>F1</th><th>PR-AUC</th></tr></thead>
+      <tbody>
+      {% for name, m in run.metrics.items %}{% if m.f1 is not None %}
+        <tr><td class="mono">{{ name }}</td><td>{{ m.precision|num }}</td><td>{{ m.recall|num }}</td><td><b>{{ m.f1|num }}</b></td><td>{{ m.pr_auc|num }}</td></tr>
+      {% endif %}{% endfor %}
+      </tbody>
+    </table>
+    {% if run.metrics.C_groups %}
+    <h3>C — координация (групповой уровень)</h3>
+    <div class="kv">
+      {% for k, v in run.metrics.C_groups.items %}<div><span class="mono">{{ k }}</span><b>{{ v|num }}</b></div>{% endfor %}
+    </div>
+    {% endif %}
+    {% else %}<p class="muted">Модель загружена из файла — метрики считаются при переобучении.</p>{% endif %}
+  </section>
+
+  <section class="card">
+    <h2>W(A,B) — веса связи</h2>
+    <p class="formula mono">W = {% for k, v in run.params.weights.items %}{{ v }}·{{ k }}{% if not forloop.last %} + {% endif %}{% endfor %}</p>
+    <p class="muted">порог ребра {{ run.params.threshold }}, окно Δt = {{ run.params.window_s }} с</p>
+    <h3>Топ сообществ</h3>
+    <ul class="list">
+      {% for c in communities %}
+      <li><a href="{% url 'community' c.pk %}">#{{ c.label }}</a> <span class="muted">{{ c.size }} акк.</span>
+        <span class="bar"><i style="width: {{ c.coordination_score|pct }}"></i></span><span class="mono">{{ c.coordination_score|num }}</span></li>
+      {% empty %}<li class="muted">Сообществ не найдено</li>{% endfor %}
+    </ul>
+  </section>
+</div>
+
+<section class="card">
+  <h2>Наиболее рискованные аккаунты</h2>
+  {% include "core/_accounts_table.html" with rows=top_accounts %}
+</section>
+{% endif %}
+{% endblock %}

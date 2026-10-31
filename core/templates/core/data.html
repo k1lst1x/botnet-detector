@@ -1,0 +1,39 @@
+{% extends "core/base.html" %}
+{% block title %}Данные{% endblock %}
+{% block content %}
+<section class="head"><div><p class="eyebrow">импорт · синтетика · история</p><h1>Данные</h1></div></section>
+<div class="grid2">
+  <section class="card">
+    <h2>Импорт CSV</h2>
+    <p class="muted">Kaggle Twitter / Cresci-2017 / TwiBot (после конвертации) или экспорт Threads. Формат — в <span class="mono">data/README.md</span>.</p>
+    <form method="post" action="{% url 'upload' %}" enctype="multipart/form-data" class="stack">
+      {% csrf_token %}
+      <label>accounts.csv <input type="file" name="accounts" accept=".csv"></label>
+      <label>posts.csv <input type="file" name="posts" accept=".csv"></label>
+      <label>платформа <select name="platform"><option>threads</option><option>twitter</option></select></label>
+      <button class="btn">Импортировать</button>
+    </form>
+  </section>
+  <section class="card">
+    <h2>Синтетические сценарии</h2>
+    <p class="muted">~300 аккаунтов: люди, одиночные боты, 5 координированных кампаний и «трудные негативы» — люди, реагирующие на одну новость.</p>
+    <form method="post" action="{% url 'synthetic' %}" class="stack">
+      {% csrf_token %}
+      <label>seed <input type="number" name="seed" value="42"></label>
+      <label class="check"><input type="checkbox" name="reset" value="1" checked> очистить текущие данные</label>
+      <button class="btn">Сгенерировать</button>
+    </form>
+    <form method="post" action="{% url 'reset' %}" onsubmit="return confirm('Удалить все данные?')">
+      {% csrf_token %}<button class="btn ghost danger">Удалить все данные</button>
+    </form>
+  </section>
+</div>
+<section class="card">
+  <h2>История запусков</h2>
+  <table class="tbl">
+    <thead><tr><th>запуск</th><th>модель</th><th>аккаунтов</th><th>рёбер</th><th>сообществ</th><th>порог</th></tr></thead>
+    {% for r in runs %}<tr><td>{{ r }}</td><td class="mono">{{ r.model_kind }}</td><td>{{ r.n_accounts }}</td><td>{{ r.n_edges }}</td><td>{{ r.n_communities }}</td><td>{{ r.params.threshold }}</td></tr>
+    {% empty %}<tr><td colspan="6" class="muted">Запусков ещё не было</td></tr>{% endfor %}
+  </table>
+</section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "core/base.html" %}{% load botnet %}
+{% block title %}Сообщество #{{ com.label }}{% endblock %}
+{% block content %}
+<section class="head">
+  <div><p class="eyebrow">{{ com.method }} · {{ com.run }}</p><h1>Сообщество #{{ com.label }}</h1></div>
+  <div class="riskbig {{ com.coordination_score|level }}"><span>coordination</span><b>{{ com.coordination_score|pct }}</b></div>
+</section>
+<section class="stats">
+  <div class="stat"><span class="k">размер</span><span class="v">{{ com.size }}</span></div>
+  <div class="stat"><span class="k">плотность</span><span class="v">{{ com.density|num }}</span></div>
+  <div class="stat"><span class="k">средний W</span><span class="v">{{ com.mean_weight|num }}</span></div>
+  <div class="stat"><span class="k">средний P(bot)</span><span class="v">{{ com.mean_bot_proba|pct }}</span></div>
+</section>
+<div class="grid2">
+  <section class="card"><h2>Объясняющие сигналы</h2>
+    <ul class="explain">{% for k, v in com.top_signals.items %}<li><span class="mono">{{ k }}Sim</span><span class="bar"><i style="width: {{ v|pct }}"></i></span><b>{{ v|num }}</b></li>{% endfor %}</ul>
+  </section>
+  <section class="card"><h2>Общие ссылки и хэштеги</h2>
+    <ul class="list mono">{% for u in com.shared_urls %}<li>{{ u }}</li>{% endfor %}{% for t in com.shared_hashtags %}<li>#{{ t }}</li>{% endfor %}</ul>
+  </section>
+</div>
+<section class="card"><h2>Участники</h2>{% include "core/_accounts_table.html" with rows=members %}</section>
+{% endblock %}

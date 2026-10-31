@@ -1,0 +1,42 @@
+{% extends "core/base.html" %}
+{% block title %}Граф координации{% endblock %}
+{% block head %}<script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>{% endblock %}
+{% block content %}
+<section class="head">
+  <div><p class="eyebrow">рёбра W(A,B) ≥ порога · цвет — сообщество · размер — риск</p><h1>Граф координации</h1></div>
+  <label class="inline">min W <input id="minw" type="range" min="0" max="0.9" step="0.05" value="0"><span id="minwv" class="mono">0</span></label>
+</section>
+<section class="card graphwrap"><div id="net"></div><div id="info" class="info muted">Кликните на узел</div></section>
+{% endblock %}
+{% block scripts %}
+<script>
+const palette = ["#e8552d","#1f6feb","#2da44e","#bf8700","#8250df","#cf222e","#0a7f86","#6e7781","#d4a72c","#57606a"];
+let network;
+async function load(minW) {
+  const r = await fetch(`{% url 'api_graph' %}?min_weight=${minW}`);
+  const g = await r.json();
+  const nodes = g.nodes.map(n => ({
+    id: n.id, label: "@" + n.handle, handle: n.handle,
+    value: 4 + 30 * (n.risk || 0),
+    color: n.community_id ? palette[n.community_id % palette.length] : "#c9c4ba",
+    title: `@${n.handle} · риск ${Math.round((n.risk||0)*100)}% · ${n.label}`,
+  }));
+  const edges = g.edges.map(e => ({ from: e.a_id, to: e.b_id, value: e.weight,
+    title: Object.entries(e.components).map(([k,v]) => `${k}: ${v}`).join("\n"), color: {color: "rgba(30,30,30,.18)"} }));
+  const data = { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) };
+  const opts = { nodes: { shape: "dot", font: { face: "Onest", size: 11, color: "#1a1a1a" }, borderWidth: 0 },
+    edges: { smooth: false, scaling: { min: .5, max: 4 } },
+    physics: { solver: "forceAtlas2Based", stabilization: { iterations: 200 } }, interaction: { hover: true } };
+  if (network) network.destroy();
+  network = new vis.Network(document.getElementById("net"), data, opts);
+  network.on("click", p => {
+    if (!p.nodes.length) return;
+    const n = data.nodes.get(p.nodes[0]);
+    document.getElementById("info").innerHTML = `<a href="/accounts/${n.handle}/">${n.title}</a>`;
+  });
+}
+const s = document.getElementById("minw");
+s.addEventListener("change", () => { document.getElementById("minwv").textContent = s.value; load(s.value); });
+load(0);
+</script>
+{% endblock %}
