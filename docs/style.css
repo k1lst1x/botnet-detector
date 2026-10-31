@@ -24,9 +24,9 @@ a { color: inherit; }
 
 .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px clamp(20px, 6vw, 96px) 80px; overflow: hidden; }
 #net { position: absolute; inset: 0; width: 100%; height: 100%; }
-.hero-inner { position: relative; max-width: 760px; }
+.hero-inner { position: relative; max-width: 720px; }
 .eyebrow { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); margin: 0 0 24px; }
-h1 { font-size: clamp(44px, 7.4vw, 100px); line-height: .95; letter-spacing: -.05em; margin: 0 0 28px; font-weight: 700; }
+h1 { font-size: clamp(40px, 5.8vw, 76px); line-height: 1; letter-spacing: -.045em; margin: 0 0 28px; font-weight: 700; }
 .lead { font-size: clamp(18px, 1.6vw, 21px); max-width: 560px; color: #3d3a33; margin: 0 0 36px; }
 .cta { display: flex; gap: 12px; flex-wrap: wrap; }
 .btn { display: inline-block; text-decoration: none; background: var(--ink); color: var(--bg); padding: 14px 24px; border-radius: 999px; font-weight: 500; transition: background .2s, transform .2s; }
@@ -109,5 +109,8 @@ blockquote { margin: 56px 0 16px; font-size: clamp(26px, 3.4vw, 40px); line-heig
   .terms { grid-template-columns: 1fr 1fr; }
   .weeks { grid-template-columns: 1fr 1fr; row-gap: 28px; }
   .tr { grid-template-columns: 48px 1fr; } .tr span:last-child { grid-column: 2; color: var(--muted); font-size: 14px; }
+}
+@media (max-width: 520px) {
+  h1 { font-size: clamp(38px, 12vw, 54px); line-height: 1.02; }
 }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } .dot { animation: none; } }
