@@ -5,5 +5,7 @@ venv/
 db.sqlite3
 media/
 staticfiles/
+datasets/
+data/raw/
 .env
 .DS_Store

@@ -33,6 +33,9 @@ python manage.py import_csv --accounts data/sample_accounts.csv --posts data/sam
 Приведите колонки к формату выше (обычно `user_id → handle`, `tweet_id → post_id`,
 `timestamp → created_at`). Разметку `label` берите из датасета.
 
+Для TwiBot-22 добавлен отдельный потоковый загрузчик и baseline, который сохраняет официальный
+`train/valid/test`: см. [TWIBOT.md](TWIBOT.md).
+
 **Не переносите качество модели Twitter/X на Threads без проверки** — эксперимент D.
 
 ## Threads API

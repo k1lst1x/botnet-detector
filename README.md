@@ -69,6 +69,7 @@ PostgreSQL: задайте `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, 
 | `import_csv --accounts a.csv --posts p.csv` | импорт Kaggle/Cresci/TwiBot/Threads ([формат](data/README.md)) |
 | `fetch_threads <запросы>` | сбор через официальный Threads API (keyword search) |
 | `run_analysis [--retrain --model xgboost --threshold 0.3 --window 600]` | полный pipeline |
+| `train_twibot22_baseline --dataset <dir>` | profile baseline на официальных split TwiBot-22 ([инструкция](data/TWIBOT.md)) |
 
 ### Веб-интерфейс и API
 
@@ -101,7 +102,8 @@ Workflow `.github/workflows/pages.yml` публикует папку `docs/`. В
 ## План (12 недель)
 
 - [x] каркас MVP: импорт, признаки, ML baseline, граф, сообщества, дашборд
-- [ ] реальные датасеты: Cresci-2017, TwiBot-20/22, Kaggle Twitter → конвертеры
+- [x] TwiBot-22: потоковый загрузчик, проверка формата и языконезависимый profile baseline
+- [ ] реальные датасеты: полный прогон TwiBot-22, Cresci-2017, TwiBot-20 и Kaggle Twitter
 - [ ] эмбеддинги (multilingual-e5 / LaBSE) вместо TF-IDF для TextSim
 - [ ] подбор весов W на валидации, Leiden
 - [ ] сбор Threads KZ/RU, разметка групп, эксперимент D
