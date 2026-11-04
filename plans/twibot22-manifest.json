@@ -1,0 +1,61 @@
+{
+  "source": "https://zenodo.org/records/7012904",
+  "download_date": "2026-11-04",
+  "scope": "public profile subset; tweets and edges not included",
+  "accounts": 1000000,
+  "classes": {
+    "human": 860057,
+    "bot": 139943
+  },
+  "splits": {
+    "train": 700000,
+    "val": 200000,
+    "test": 100000
+  },
+  "classes_by_split": {
+    "test": {
+      "human": 70556,
+      "bot": 29444
+    },
+    "train": {
+      "human": 645414,
+      "bot": 54586
+    },
+    "val": {
+      "human": 144087,
+      "bot": 55913
+    }
+  },
+  "files": [
+    {
+      "name": "label.csv",
+      "bytes": 21628029,
+      "md5": "daa2b6ce6468e0d6acce2de1740b5071",
+      "verified": true
+    },
+    {
+      "name": "split.csv",
+      "bytes": 20407914,
+      "md5": "c7df89a5c975fbf67fa9a118b934531b",
+      "verified": true
+    },
+    {
+      "name": "readme.md",
+      "bytes": 1907,
+      "md5": "539c6613530abaa45d83486fec198bab",
+      "verified": true
+    },
+    {
+      "name": "user.json",
+      "bytes": 782571868,
+      "md5": "1bfe61325c88be88592fef90a000d444",
+      "verified": true,
+      "status": "complete"
+    }
+  ],
+  "missing_for_behavioral_training": [
+    "tweet_0.json through tweet_8.json",
+    "edge.csv"
+  ],
+  "status": "public subset downloaded and checksum verified; full dataset incomplete"
+}

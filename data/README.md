@@ -1,3 +1,7 @@
+Новый импорт FastAPI/Django CRM описан в [docs/engine.md](../docs/engine.md).
+Пример нового JSON-контракта: [threads_example.json](threads_example.json).
+Ниже — формат прежнего демонстрационного импорта.
+
 # Формат данных
 
 Импорт: страница **Данные** в веб-интерфейсе или

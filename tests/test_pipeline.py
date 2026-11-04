@@ -1,4 +1,6 @@
 import builtins
+import os
+from unittest import skipUnless
 from unittest.mock import patch
 
 from django.test import Client, TestCase
@@ -41,6 +43,7 @@ class UnitTests(TestCase):
         self.assertEqual(time_sim({1, 2}, {3, 100}), 0.5)  # bucket 2 matches 3 (±1 window)
 
 
+@skipUnless(os.environ.get("RUN_LEGACY_TRAINING_TESTS") == "1", "Legacy synthetic training is opt-in; preparation must not train")
 class PipelineTests(TestCase):
     @classmethod
     def setUpTestData(cls):

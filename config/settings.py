@@ -78,3 +78,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024
 
 THREADS_ACCESS_TOKEN = os.environ.get("THREADS_ACCESS_TOKEN", "")
+
+# Internal engine; credentials stay on the server.
+ENGINE_API_URL = os.environ.get("ENGINE_API_URL", "http://127.0.0.1:8001")
+ENGINE_API_KEY = os.environ.get("ENGINE_API_KEY", "")
+LOGIN_URL = "/auth/login/"
+LOGIN_REDIRECT_URL = "/engine/"
+LOGOUT_REDIRECT_URL = "/auth/login/"

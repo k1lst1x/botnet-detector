@@ -66,15 +66,19 @@ def train_and_evaluate(accounts, feats, kind="auto", seed=42):
 
 def run_analysis(params: GraphParams | None = None, retrain=False, model_kind="auto"):
     params = params or GraphParams()
+    bundle = None if retrain else ml.load(MODEL_PATH())
+    if bundle is None and not retrain:
+        raise RuntimeError("model_not_ready: training must be requested explicitly offline")
     accounts, feats, edges, C, posts = compute_features(params)
     if not accounts:
         raise ValueError("Нет данных: импортируйте CSV или сгенерируйте синтетику.")
     metrics = {}
-    bundle = None if retrain else ml.load(MODEL_PATH())
-    if bundle is None:
+    if retrain:
         bundle, metrics = train_and_evaluate(accounts, feats, model_kind, params.seed)
+    if bundle is None:
+        raise RuntimeError("model_not_ready: insufficient labelled data")
     rows = [feats[a.id] for a in accounts]
-    proba = ml.predict(bundle, rows) if bundle else np.array([ml.heuristic_proba(r) for r in rows])
+    proba = ml.predict(bundle, rows)
     anomaly = ml.anomaly_scores(rows, BEHAVIOR_FEATURES, params.seed)
     louvain, dbscan = detect_communities(C, params)
     by_id = {a.id: a for a in accounts}

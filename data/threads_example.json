@@ -1,0 +1,9 @@
+{
+  "schema_version": "1",
+  "accounts": [{"platform":"threads","external_user_id":"example-123","username":"example_account"}],
+  "posts": [
+    {"platform":"threads","external_post_id":"example-p1","author_id":"example-123","created_at":"2026-11-01T08:00:00Z","text":"Пример публикации https://example.org/a","is_reply":false},
+    {"platform":"threads","external_post_id":"example-p2","author_id":"example-123","created_at":"2026-11-01T09:00:00Z","text":"Ещё одна публикация","is_reply":null}
+  ],
+  "observation":{"start":"2026-11-01T00:00:00Z","end":"2026-11-02T00:00:00Z","source":"file_import","complete":false,"truncated":false}
+}

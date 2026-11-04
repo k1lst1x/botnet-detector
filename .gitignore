@@ -7,3 +7,14 @@ media/
 staticfiles/
 .env
 .DS_Store
+
+# Raw and prepared research datasets
+data/raw/
+data/processed/
+
+.pytest_cache/
+engine.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+.env.*
+!.env.example

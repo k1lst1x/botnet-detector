@@ -7,7 +7,6 @@ from django.views.decorators.http import require_POST
 
 from analysis.features import BEHAVIOR_FEATURES, NETWORK_FEATURES
 from analysis.graph import DEFAULT_WEIGHTS, GraphParams
-from analysis.pipeline import run_analysis
 from analysis.synthetic import generate
 
 from .importer import import_records, read_csv
@@ -104,14 +103,8 @@ def synthetic(request):
 
 @require_POST
 def analyze(request):
-    try:
-        params = GraphParams(threshold=float(request.POST.get("threshold") or 0.30),
-                             window_s=int(request.POST.get("window") or 600))
-        run = run_analysis(params, retrain=bool(request.POST.get("retrain")))
-        messages.success(request, f"Анализ завершён: {run.n_communities} сообществ, {run.n_edges} рёбер")
-    except Exception as e:  # noqa: BLE001
-        messages.error(request, f"Ошибка анализа: {e}")
-    return redirect("dashboard")
+    # All new analysis runs go through the engine; the web cannot initiate training.
+    return redirect("engine_jobs")
 
 
 @require_POST

@@ -5,13 +5,7 @@
     <p class="eyebrow">Threads · KZ / RU</p>
     <h1>Обнаружение координированных бот-сетей</h1>
   </div>
-  <form method="post" action="{% url 'analyze' %}" class="inline">
-    {% csrf_token %}
-    <label>порог W <input name="threshold" type="number" step="0.05" min="0.05" max="0.95" value="0.30"></label>
-    <label>Δt, с <input name="window" type="number" step="60" min="60" value="600"></label>
-    <label class="check"><input type="checkbox" name="retrain" value="1"> переобучить</label>
-    <button class="btn">Запустить анализ</button>
-  </form>
+  <a class="btn" href="{% url 'engine_jobs' %}">Новый анализ</a>
 </section>
 
 <section class="stats">
