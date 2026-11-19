@@ -1,0 +1,271 @@
+{
+  "created_at_utc": "2026-11-19T12:25:05.068935+00:00",
+  "feature_version": "portable-v1",
+  "prepared_rows": 1000000,
+  "split_rows": {
+    "train": 700000,
+    "val": 200000,
+    "test": 100000
+  },
+  "behavior_available": false,
+  "input_kind": "synthetic_example",
+  "input_accounts": 1,
+  "input_posts": 2,
+  "real_threads_quality_validated": false,
+  "common_features_at_50_percent_coverage": [],
+  "features": [
+    {
+      "name": "followers_log1p",
+      "group": "profile",
+      "twitter_observed": 1000000,
+      "twitter_ratio": 1.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "following_log1p",
+      "group": "profile",
+      "twitter_observed": 1000000,
+      "twitter_ratio": 1.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "followers_following_ratio",
+      "group": "profile",
+      "twitter_observed": 1000000,
+      "twitter_ratio": 1.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "bio_present",
+      "group": "profile",
+      "twitter_observed": 1000000,
+      "twitter_ratio": 1.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "avatar_present",
+      "group": "profile",
+      "twitter_observed": 1000000,
+      "twitter_ratio": 1.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "account_age_days",
+      "group": "profile",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "posts_per_day",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "interval_median_s",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "interval_p90_s",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "interval_cv",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "burstiness",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "short_interval_ratio",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "hour_entropy",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "circadian_amplitude",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "max_posts_per_hour",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "active_day_ratio",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "reply_ratio",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 1,
+      "input_ratio": 1.0
+    },
+    {
+      "name": "repost_ratio",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "quote_ratio",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "media_ratio",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "duplicate_ratio",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 1,
+      "input_ratio": 1.0
+    },
+    {
+      "name": "text_length_median",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 1,
+      "input_ratio": 1.0
+    },
+    {
+      "name": "text_length_cv",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 1,
+      "input_ratio": 1.0
+    },
+    {
+      "name": "text_digit_ratio",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 1,
+      "input_ratio": 1.0
+    },
+    {
+      "name": "text_space_ratio",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 1,
+      "input_ratio": 1.0
+    },
+    {
+      "name": "text_punctuation_ratio",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 1,
+      "input_ratio": 1.0
+    },
+    {
+      "name": "url_ratio",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 1,
+      "input_ratio": 1.0
+    },
+    {
+      "name": "unique_domains",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 1,
+      "input_ratio": 1.0
+    },
+    {
+      "name": "domain_concentration",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 1,
+      "input_ratio": 1.0
+    },
+    {
+      "name": "unique_targets",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    },
+    {
+      "name": "target_concentration",
+      "group": "portable",
+      "twitter_observed": 0,
+      "twitter_ratio": 0.0,
+      "input_observed": 0,
+      "input_ratio": 0.0
+    }
+  ],
+  "limitations": [
+    "Target quality requires independently labelled Threads data.",
+    "Synthetic example demonstrates contract coverage only, not real API availability.",
+    "Coverage is not feature importance and is not a licence to change missingness rules."
+  ]
+}

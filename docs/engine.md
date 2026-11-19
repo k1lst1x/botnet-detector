@@ -67,8 +67,10 @@ Redis хранит очередь; jobs сохраняются в SQL, сыры�
 Порты опубликованы только на localhost. Compose использует Django runserver и
 предназначен для локальной разработки. Для внешнего сервера потребуются production
 WSGI/ASGI, HTTPS и обслуживание static. Большие raw/processed файлы не входят в образ.
-Образ и PostgreSQL/Redis запускаются пользователем; в ходе подготовки проверена
-конфигурация Compose, но полноценный запуск контейнеров не выполнялся.
+19 ноября стек реально запущен и проверен, включая PostgreSQL/Redis и восстановление
+после сбоев: [отчёт запуска](reports/2026-11-19-mvp-runtime.md). В локальном .env
+указаны DJANGO_PORT=8100 / ENGINE_PORT=8101 из-за занятого порта; по умолчанию
+Compose использует прежние 8000/8001.
 
 ## Проверка цепочки без модели
 
@@ -215,7 +217,10 @@ python manage.py makemigrations --check --dry-run
 Обычный pytest не обучает модель. TestClient может требовать разрешённые локальные
 сокеты в sandbox. Проверки покрывают контракты, признаки, tiny TwiBot→Parquet,
 изолированный API→SQL job→worker, Celery eager с memory broker, адаптер Threads
-и Django CRM. Отдельного живого Redis/PostgreSQL интеграционного запуска пока нет.
+и Django CRM. Живой прогон Redis/PostgreSQL выполнен 19 ноября; повторяемые сценарии —
+scripts/smoke_mvp.py и scripts/smoke_recovery.py.
 
 Финальный прогон подготовки: **38 passed, 2 skipped** (только старые обучающие тесты).
 Django check, migration drift, Ruff и Docker Compose config прошли.
+
+Дополнительный tweet-фрагмент и реальная выборка: [docs/DATA_ACCESS.md](DATA_ACCESS.md).

@@ -119,6 +119,19 @@ def _index_csv(db, path, table, field, allowed):
                 raise ValueError(f"Duplicate id in {path.name}") from exc
 
 
+def _known_user_id(db, value):
+    value = str(value)
+    if db.execute("SELECT 1 FROM labels WHERE id=?", (value,)).fetchone():
+        return value
+    prefixed = f"u{value}"
+    if (
+        value.isdigit()
+        and db.execute("SELECT 1 FROM labels WHERE id=?", (prefixed,)).fetchone()
+    ):
+        return prefixed
+    raise ValueError("Tweet author is absent from official labels")
+
+
 def _stage_tweets(db, source):
     files = sorted(source.glob("tweet_*.json"))
     edge = source / "edge.csv"
@@ -148,7 +161,8 @@ def _stage_tweets(db, source):
                     author = mapped[0] if mapped else None
                 if not author:
                     raise ValueError("Tweet author unavailable; provide edge.csv")
-                if mapped and str(author) != mapped[0]:
+                author = _known_user_id(db, author)
+                if mapped and author != _known_user_id(db, mapped[0]):
                     raise ValueError("Conflicting tweet authors")
                 refs = raw.get("referenced_tweets")
                 types = {r.get("type") for r in refs or []}

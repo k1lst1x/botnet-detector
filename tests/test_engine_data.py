@@ -194,3 +194,23 @@ def test_handle_only_import_does_not_collide_with_platform_id():
     assert by_handle.accounts[0].key != by_id.accounts[0].key
     assert by_handle.accounts[0].identity_source == "username_fallback"
     assert by_handle.posts[0].author_id == "username:123"
+
+
+def test_native_numeric_author_id_joins_prefixed_twibot_user(tmp_path):
+    source = twibot(tmp_path)
+    (source / "tweet_0.json").write_text(
+        json.dumps(
+            [
+                {
+                    "id": "t10",
+                    "author_id": "1",
+                    "created_at": "2022-01-01T00:00:00Z",
+                    "text": "hi",
+                }
+            ]
+        )
+    )
+    prepare_twibot(source, tmp_path / "out")
+    row = pq.read_table(tmp_path / "out/train.parquet").to_pylist()[0]
+    assert row["external_user_id"] == "u1"
+    assert row["observed_posts"] == 1
