@@ -13,6 +13,7 @@ Threads API пока без доступа: готовы импорт CSV/JSONL/
 
 - [Запуск, данные, API и проверки](docs/engine.md)
 - [План рабочего MVP и передача другой LLM](MVP_HANDOFF.md)
+- [Обучающая выборка: 197 413 аккаунтов, полный аудит 10 млн постов](docs/reports/2026-11-19-training-data.md)
 - [Каталог языконезависимых признаков](docs/features.md)
 - [Исходный план](plans/2026-11-04-threads-bot-detection.md)
 - Django CRM: `/engine/`, `/engine/accounts/`; вход: `/auth/login/`.

@@ -110,3 +110,14 @@ follow its usage conditions. Could you please provide access instructions?
 Thank you,
 [your name]
 ```
+
+## Полная обработка скачанного фрагмента
+
+После smoke-сэмпла обработаны все 10 000 000 записей файла, а не только его начало.
+Получено 484 206 авторов; все сопоставились с официальными метками, повторных ID нет.
+По минимуму 20 постов отобраны 197 413 аккаунтов; для расчёта признаков использованы
+8 898 386 постов с cap=100/seed=42. Исходные train/val/test сохранены.
+Parquet: data/processed/twibot22-shard7-training-v1; NumPy: data/processed/twibot22-shard7-structural-arrays-v1.
+[Подробный отчёт](reports/2026-11-19-training-data.md). Эта более крупная выборка
+также остаётся срезом одного стороннего фрагмента, а не полным benchmark.
+Обучение не запускалось.
