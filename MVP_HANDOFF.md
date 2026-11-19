@@ -423,3 +423,9 @@ docker compose ps
 Артефакты / пути к данным:
 Следующий шаг / что требуется от пользователя:
 ```
+
+## Первое обучение выполнено — 2026-11-19
+
+Кандидат `media/models/experiments/structural-shard7-v1-run1/model.joblib` обучен отдельно от стенда. Test PR-AUC 0.2908, ROC-AUC 0.5739, precision 25.84%, recall 86.68%, F1 0.3982 при val-пороге 0.0290754. Цель precision ≥90% не достигнута. Модель только `review_only`; качество на Threads неизвестно. Действующий сервис не переключался.
+
+Полный контекст для следующей LLM: `docs/reports/2026-11-19-first-training.md` и `.json`, `docs/TRAINING_EXPERIMENT.md`, `docs/superpowers/plans/2026-11-19-first-training.md`. Следующий шаг: аудит смещения train/val и план второго эксперимента, плюс размеченный Threads holdout через импорт. Не подбирать параметры по уже просмотренному test.

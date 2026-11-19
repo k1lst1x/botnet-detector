@@ -12,7 +12,16 @@ def analyze_dataset(data, model):
     results = []
     for account in data.accounts:
         posts = grouped[account.key]
-        row = extract_features(account, posts, data.observation)
+        status = model.status()
+        selected = posts
+        observation = data.observation
+        policy = model.bundle.get("sampling_policy") if status["status"] == "ready" else None
+        if policy:
+            from .sampling import sample_posts
+            selected = sample_posts(posts, policy["max_posts"], policy["seed"])
+            if len(selected) < len(posts):
+                observation = observation.model_copy(update={"complete": False, "truncated": True})
+        row = extract_features(account, selected, observation)
         status = model.status()
         warnings = []
         score = None
@@ -25,13 +34,14 @@ def analyze_dataset(data, model):
         if status["status"] == "ready":
             required = model.bundle["required_observed_features"]
             observed = [n for n in required if row.get(n) is not None]
-            if len(observed) / max(1, len(required)) < model.bundle.get(
+            if len(posts) < model.bundle.get("minimum_posts", 0) or len(observed) / max(1, len(required)) < model.bundle.get(
                 "minimum_observed_ratio", 0.5
             ):
                 decision = "insufficient_data"
             else:
                 score = model.predict([row])[0]
-                decision = "bot" if score >= model.bundle["threshold"] else "human"
+                decision = ("needs_review" if model.bundle.get("decision_policy") == "review_only"
+                            else "bot" if score >= model.bundle["threshold"] else "human")
                 warnings.append(
                     "threads_quality_unverified"
                     if account.platform == "threads"
@@ -62,8 +72,9 @@ def analyze_dataset(data, model):
                 ]
         coverage = {
             "posts": len(posts),
-            "complete": data.observation.complete,
-            "truncated": data.observation.truncated,
+            "sampled_posts": len(selected),
+            "complete": observation.complete,
+            "truncated": observation.truncated,
             "available_features": sum(
                 v is not None for n, v in row.items() if not n.endswith("__missing")
             ),
