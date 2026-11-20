@@ -68,6 +68,7 @@ def read_import(content: str, format: str) -> Dataset:
             if row.get("following") not in ("", None)
             else None,
             biography=row.get("biography"),
+            has_avatar=_boolean(row.get("has_avatar")),
         )
         key = account.key
         if key in accounts and accounts[key] != account:

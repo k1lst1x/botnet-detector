@@ -1,0 +1,22 @@
+{
+  "schema_version": "1",
+  "accounts": [
+    {
+      "platform": "threads",
+      "external_user_id": "demo-profile",
+      "username": "demo_profile",
+      "followers": 100,
+      "following": 200,
+      "biography": "Example profile",
+      "has_avatar": true
+    }
+  ],
+  "posts": [],
+  "observation": {
+    "source": "file_import",
+    "complete": false,
+    "truncated": false,
+    "start": "2026-11-20T00:00:00Z",
+    "end": "2026-11-20T00:00:00Z"
+  }
+}

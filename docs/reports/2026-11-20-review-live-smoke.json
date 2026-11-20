@@ -1,0 +1,18 @@
+{
+  "mode": "running_stack_without_model",
+  "checks": [
+    "live_api_and_ready_model",
+    "real_django_login_and_anonymous_redirect",
+    "web_import_and_idempotent_repeat",
+    "postgres_redis_worker_completed_import",
+    "real_model_score_explanation_and_review_queue",
+    "django_and_fastapi_tenant_isolation",
+    "manual_crm_label_survives_result_refresh"
+  ],
+  "web_url": "http://127.0.0.1:8100",
+  "api_url": "http://127.0.0.1:8101",
+  "status": "passed",
+  "import_job_id": "9d9f8646-19d6-4f04-a0e2-e194697ed497",
+  "analysis_job_id": "46eeb240-758f-44a8-bfd2-d0ef2c106433",
+  "fixture_author_id": "smoke-d69f85fbbc4b4a39bd0e5e793653633e"
+}

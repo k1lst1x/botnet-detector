@@ -3,6 +3,7 @@ import uuid
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.db.models import F
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -172,7 +173,7 @@ def accounts(request):
     return render(
         request,
         "core/engine_accounts.html",
-        {"accounts": EngineAccount.objects.filter(owner=request.user)[:500]},
+        {"accounts": EngineAccount.objects.filter(owner=request.user).order_by(F("score").desc(nulls_last=True), "pk")[:500]},
     )
 
 

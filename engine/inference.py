@@ -5,6 +5,10 @@ from collections import defaultdict
 from .features import FEATURE_VERSION, extract_features
 
 
+def review_decision(score, threshold):
+    return "priority_review" if score >= threshold else "standard_review"
+
+
 def analyze_dataset(data, model):
     grouped = defaultdict(list)
     for post in data.posts:
@@ -42,6 +46,9 @@ def analyze_dataset(data, model):
                 score = model.predict([row])[0]
                 decision = ("needs_review" if model.bundle.get("decision_policy") == "review_only"
                             else "bot" if score >= model.bundle["threshold"] else "human")
+                if model.bundle.get("decision_policy") == "review_queue":
+                    decision = review_decision(score, model.bundle["threshold"])
+                    warnings.append("uncalibrated_score")
                 warnings.append(
                     "threads_quality_unverified"
                     if account.platform == "threads"

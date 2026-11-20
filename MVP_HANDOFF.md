@@ -443,3 +443,9 @@ docker compose ps
 Отчёт: docs/reports/2026-11-20-feature-model-comparison.md и .json. Profile/posts/combined × XGBoost/CatBoost, одинаковые train/val, фиксированные параметры, без test. Лучший PR-AUC profile-catboost0.45232 (profile-xgboost0.45215), лучший F1 combined-catboost0.48581. Ни одна модель не достигла precision90% с минимум100 predictions. Главный выигрыш от профиля, смена алгоритма дала мало; публикации поверх профиля снизили PR-AUC. Все пять profile features заполнены, но доступность в Threads ещё не подтверждена.
 
 Локальные research-only артефакты: media/models/experiments/feature-model-comparison-v3/. CatBoost не поддерживается ModelService; ничего не развёртывать автоматически. Новый скрипт scripts/compare_feature_models.py, config experiments/feature-model-comparison.json, дополнительная зависимость requirements-research.txt. Следующий шаг: анализ ошибок/источников профильного сигнала, сбор последовательных наблюдений и независимого Threads holdout.
+
+## Активный MVP ручной проверки — 2026-11-20
+
+По запросу пользователя подключён profile-XGBoost с review_queue, порог0.4074029. Validation precision60.40%, recall19.86%, охват очередью8.42%; это не качество Threads. Модель не выносит bot/human: priority_review/standard_review, при неполном профиле insufficient_data. Требует все5profile features, публикации не нужны. Активный артефакт media/models/portable.joblib; исходник media/models/review-mvp-v1/model.joblib. Скрипт упаковки scripts/build_review_model.py.
+
+Локальный стек запущен: Django http://127.0.0.1:8100/engine/, API http://127.0.0.1:8101/docs. Реальный smoke прошёл импорт/worker/оценку/объяснения/CRM/изоляцию/сохранение ручной метки: docs/reports/2026-11-20-review-live-smoke.json. Руководство и ограничения: docs/reports/2026-11-20-review-mvp.md. Пример профиля без постов data/examples/profile-review.json; только canonical JSON поддерживает profile-only, CSV/JSONL требуют публикацию и теперь читают has_avatar.
