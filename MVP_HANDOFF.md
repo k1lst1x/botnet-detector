@@ -429,3 +429,11 @@ docker compose ps
 Кандидат `media/models/experiments/structural-shard7-v1-run1/model.joblib` обучен отдельно от стенда. Test PR-AUC 0.2908, ROC-AUC 0.5739, precision 25.84%, recall 86.68%, F1 0.3982 при val-пороге 0.0290754. Цель precision ≥90% не достигнута. Модель только `review_only`; качество на Threads неизвестно. Действующий сервис не переключался.
 
 Полный контекст для следующей LLM: `docs/reports/2026-11-19-first-training.md` и `.json`, `docs/TRAINING_EXPERIMENT.md`, `docs/superpowers/plans/2026-11-19-first-training.md`. Следующий шаг: аудит смещения train/val и план второго эксперимента, плюс размеченный Threads holdout через импорт. Не подбирать параметры по уже просмотренному test.
+
+## Аудит и weighted-v2 выполнены — 2026-11-20
+
+Подробности: `docs/reports/2026-11-20-weighted-validation.md` и `.json`; распределения — `2026-11-20-training-shift.json`, полнота отбора — `2026-11-20-selection-retention.json`. Вес класса ботов 21.732908201097434 получен исключительно по train. Остальные параметры run1 сохранены. Validation F1 0.41237 против 0.41196; PR-AUC 0.31364 против 0.31453. Precision90% недостижима. Убедительного улучшения нет.
+
+Кандидат: `media/models/experiments/structural-shard7-weighted-v2-run1/model.joblib`, загружен ModelService, только review_only. В плане evaluation_policy=validation_only; evaluate отказывает до чтения test. Test этого этапа не читался; активный стенд не изменён. Проверка независимым reviewer: Important issues отсутствуют.
+
+Следующий предлагаемый этап: предфиксированное сравнение структурных и дополнительных переносимых профильных признаков на train/val, без настройки по test. Для реальной проверки Threads нужны настоящий экспорт/API и независимая разметка. Сам импорт/CRM уже существуют; синтетический пример не является контрольной выборкой.

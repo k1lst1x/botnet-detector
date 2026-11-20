@@ -1,0 +1,34 @@
+{
+  "source": "read-only indexed official accounts; prepared manifest class counts",
+  "scope": "train/val only",
+  "rows": [
+    {
+      "split": "train",
+      "class": "human",
+      "official_accounts": 645414,
+      "eligible_accounts": 146545,
+      "retained_rate": 0.22705581223834623
+    },
+    {
+      "split": "train",
+      "class": "bot",
+      "official_accounts": 54586,
+      "eligible_accounts": 6743,
+      "retained_rate": 0.12352984281683949
+    },
+    {
+      "split": "val",
+      "class": "human",
+      "official_accounts": 144087,
+      "eligible_accounts": 22253,
+      "retained_rate": 0.1544414138680103
+    },
+    {
+      "split": "val",
+      "class": "bot",
+      "official_accounts": 55913,
+      "eligible_accounts": 7664,
+      "retained_rate": 0.1370700910342854
+    }
+  ]
+}

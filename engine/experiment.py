@@ -103,6 +103,9 @@ def evaluate(output):
     for name, digest in frozen['frozen_sha256'].items():
         if file_hash(output/name) != digest:
             raise ValueError('Frozen artifact modified')
+    plan = json.loads((output/'plan.json').read_text())
+    if plan.get('evaluation_policy', '').startswith('validation_only'):
+        raise ValueError('This experiment is validation-only; a new independent holdout is required')
     arrays = Path(frozen['arrays_directory'])
     if file_hash(arrays/'manifest.json') != frozen['arrays_manifest_sha256']:
         raise ValueError('Array manifest modified')

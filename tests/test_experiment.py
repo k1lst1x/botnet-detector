@@ -78,3 +78,12 @@ def test_twitter_native_and_twibot_post_ids_select_same_subset():
     native=[posts[0].model_copy(update={'platform':'twitter','external_post_id':str(i)}) for i in range(150)]
     canonical=[p.model_copy(update={'external_post_id':'t'+p.external_post_id}) for p in native]
     assert ['t'+p.external_post_id for p in sample_posts(native)]==[p.external_post_id for p in sample_posts(canonical)]
+
+
+def test_validation_only_experiment_rejects_test_evaluation(tmp_path):
+    from engine.experiment import evaluate
+    from engine.shard_index import file_hash
+    (tmp_path/'plan.json').write_text(json.dumps({'evaluation_policy':'validation_only; previously viewed test is not a fresh holdout'}))
+    (tmp_path/'frozen.json').write_text(json.dumps({'frozen_sha256':{'plan.json':file_hash(tmp_path/'plan.json')}}))
+    with pytest.raises(ValueError,match='validation.only'):
+        evaluate(tmp_path)
