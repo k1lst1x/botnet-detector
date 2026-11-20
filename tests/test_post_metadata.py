@@ -10,3 +10,13 @@ def test_missing_metadata_is_not_empty_and_names_are_not_ids():
     assert metadata({})=={'urls':None,'targets':None}
     assert metadata({'entities':{'urls':[],'user_mentions':[]}})=={'urls':[],'targets':[]}
     assert metadata({'entities':{'user_mentions':[{'screen_name':'person'}]}})['targets'] is None
+
+
+def test_invalid_expanded_link_is_not_silently_counted_as_empty():
+    import pytest
+    with pytest.raises(ValueError):
+        metadata({'entities':{'urls':[{'expanded_url':'javascript:alert(1)'}]}})
+
+
+def test_expanded_link_may_still_be_shortener():
+    assert metadata({'entities':{'urls':[{'url':'https://t.co/x','expanded_url':'https://bit.ly/y'}]}})['urls']==['https://bit.ly/y']
