@@ -457,3 +457,7 @@ docker compose ps
 ## Подготовка накопления наблюдений
 
 Добавлены engine/history.py и scripts/merge_observations.py: canonical JSON imports → dataset.json+coverage.json с SHA256 входов, удалением дублей, строгими конфликтами и свежим датированным профилем. Итог всегда incomplete, никаких выдуманных temporal features. Документ docs/THREADS_COLLECTION.md описывает сбор, null/empty, стабильные ID, профили без исторической утечки и дальнейший эксперимент. Реальные новые Threads-данные не собраны: доступа API/экспорта пока нет. Smoke media/history-smoke-v1 на примере, не обучающие данные. Активная модель без изменений.
+
+## Обнаружены потерянные raw metadata
+
+docs/reports/2026-11-20-metadata-discovery.md/.json (числа в raw-behavior-probe.json). Первые10000raw записей содержат expanded_url и user_mentions IDs, не сохранённые прежним индексом. 5906/5937текстовыхURL=t.co; entities3662URL/3505постов, targets6379постов. Это не population estimate; несовпадение числаURL требует аудита до новых признаков. engine/post_metadata.py готов как отдельный extractor, active/frozen данные не менялись. Следующий этап — полный raw audit и v2features на тех же bottom100 train/val постах, затем fixed-capacity эксперимент. Исправлен order-dependent конфликт старых snapshots в history.py, regression6permutations passed.

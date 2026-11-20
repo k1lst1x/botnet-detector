@@ -8,9 +8,15 @@ def merge_observations(datasets):
     if not datasets:
         raise ValueError('No observations supplied')
     accounts,posts={},{}
+    snapshots={}
     duplicates=0
     for data in datasets:
         for account in data.accounts:
+            snapshot_key=(account.key,account.collected_at)
+            previous=snapshots.get(snapshot_key)
+            if previous is not None and previous != account:
+                raise ValueError("Conflicting account snapshot at identical collection time")
+            snapshots[snapshot_key]=account
             old=accounts.get(account.key)
             if old is not None and old != account:
                 if old.collected_at is None or account.collected_at is None or old.collected_at==account.collected_at:

@@ -1,0 +1,105 @@
+{
+  "scope": "first10000 raw records, convenience sample not population estimate; labels/splits not joined",
+  "records": 10000,
+  "fields_present": {
+    "attachments": 10000,
+    "author_id": 10000,
+    "context_annotations": 10000,
+    "conversation_id": 10000,
+    "created_at": 10000,
+    "entities": 10000,
+    "geo": 10000,
+    "id": 10000,
+    "in_reply_to_user_id": 10000,
+    "lang": 10000,
+    "possibly_sensitive": 10000,
+    "public_metrics": 10000,
+    "referenced_tweets": 10000,
+    "reply_settings": 10000,
+    "source": 10000,
+    "text": 10000,
+    "withheld": 10000
+  },
+  "nonempty_entities": 10000,
+  "reference_types": {},
+  "url_occurrences": 5937,
+  "top_domains": [
+    [
+      "t.co",
+      5906
+    ],
+    [
+      "t.\u2026",
+      8
+    ],
+    [
+      "t.co\u2026",
+      7
+    ],
+    [
+      "t\u2026",
+      6
+    ],
+    [
+      "\u2026",
+      6
+    ],
+    [
+      "t.c\u2026",
+      4
+    ]
+  ],
+  "raw_source_bytes": 11923856722,
+  "metadata_probe": {
+    "counts": {
+      "records": 10000,
+      "urls_known": 10000,
+      "urls_nonempty": 3505,
+      "targets_known": 10000,
+      "targets_nonempty": 6379
+    },
+    "expanded_domains_top10": [
+      [
+        "twitter.com",
+        677
+      ],
+      [
+        "bit.ly",
+        346
+      ],
+      [
+        "ow.ly",
+        149
+      ],
+      [
+        "dlvr.it",
+        118
+      ],
+      [
+        "trib.al",
+        79
+      ],
+      [
+        "tinyurl.com",
+        58
+      ],
+      [
+        "youtu.be",
+        55
+      ],
+      [
+        "cutt.ly",
+        43
+      ],
+      [
+        "www.chartmill.com",
+        40
+      ],
+      [
+        "www.valueinvestingnews.com",
+        40
+      ]
+    ],
+    "expanded_url_count": 3662
+  }
+}
