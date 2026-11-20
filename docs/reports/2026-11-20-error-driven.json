@@ -1,0 +1,323 @@
+{
+  "scope": "exploratory same-validation comparison, no test, no deployment",
+  "audit": {
+    "followers": [
+      {
+        "range": "[-inf,100)",
+        "n": 7987,
+        "humans": 4733,
+        "bots": 3254,
+        "fp": 985,
+        "fn": 1732,
+        "fpr": 0.20811324741178958,
+        "fnr": 0.5322679778733866
+      },
+      {
+        "range": "[100,1000)",
+        "n": 12408,
+        "humans": 9235,
+        "bots": 3173,
+        "fp": 13,
+        "fn": 3173,
+        "fpr": 0.0014076881429344883,
+        "fnr": 1.0
+      },
+      {
+        "range": "[1000,10000)",
+        "n": 7337,
+        "humans": 6332,
+        "bots": 1005,
+        "fp": 0,
+        "fn": 1005,
+        "fpr": 0.0,
+        "fnr": 1.0
+      },
+      {
+        "range": "[10000,inf)",
+        "n": 2185,
+        "humans": 1953,
+        "bots": 232,
+        "fp": 0,
+        "fn": 232,
+        "fpr": 0.0,
+        "fnr": 1.0
+      }
+    ],
+    "following": [
+      {
+        "range": "[-inf,100)",
+        "n": 7285,
+        "humans": 4663,
+        "bots": 2622,
+        "fp": 654,
+        "fn": 1711,
+        "fpr": 0.14025305597254986,
+        "fnr": 0.65255530129672
+      },
+      {
+        "range": "[100,1000)",
+        "n": 13971,
+        "humans": 10256,
+        "bots": 3715,
+        "fp": 331,
+        "fn": 3112,
+        "fpr": 0.032273790951638064,
+        "fnr": 0.8376850605652759
+      },
+      {
+        "range": "[1000,10000)",
+        "n": 7995,
+        "humans": 6739,
+        "bots": 1256,
+        "fp": 13,
+        "fn": 1248,
+        "fpr": 0.0019290695948953852,
+        "fnr": 0.9936305732484076
+      },
+      {
+        "range": "[10000,inf)",
+        "n": 666,
+        "humans": 595,
+        "bots": 71,
+        "fp": 0,
+        "fn": 71,
+        "fpr": 0.0,
+        "fnr": 1.0
+      }
+    ],
+    "bio": [
+      {
+        "range": "[-inf,0.5)",
+        "n": 5160,
+        "humans": 2657,
+        "bots": 2503,
+        "fp": 757,
+        "fn": 1095,
+        "fpr": 0.28490779074143774,
+        "fnr": 0.43747502996404314
+      },
+      {
+        "range": "[0.5,inf)",
+        "n": 24757,
+        "humans": 19596,
+        "bots": 5161,
+        "fp": 241,
+        "fn": 5047,
+        "fpr": 0.0122984282506634,
+        "fnr": 0.9779112575082348
+      }
+    ],
+    "avatar": [
+      {
+        "range": "[-inf,0.5)",
+        "n": 2,
+        "humans": 1,
+        "bots": 1,
+        "fp": 0,
+        "fn": 1,
+        "fpr": 0.0,
+        "fnr": 1.0
+      },
+      {
+        "range": "[0.5,inf)",
+        "n": 29915,
+        "humans": 22252,
+        "bots": 7663,
+        "fp": 998,
+        "fn": 6141,
+        "fpr": 0.044849901132482474,
+        "fnr": 0.8013832702596894
+      }
+    ],
+    "sample_posts": [
+      {
+        "range": "[-inf,30)",
+        "n": 2964,
+        "humans": 2245,
+        "bots": 719,
+        "fp": 102,
+        "fn": 564,
+        "fpr": 0.04543429844097996,
+        "fnr": 0.7844228094575799
+      },
+      {
+        "range": "[30,60)",
+        "n": 24930,
+        "humans": 18313,
+        "bots": 6617,
+        "fp": 882,
+        "fn": 5262,
+        "fpr": 0.048162507508327415,
+        "fnr": 0.7952244219434789
+      },
+      {
+        "range": "[60,100)",
+        "n": 1714,
+        "humans": 1425,
+        "bots": 289,
+        "fp": 14,
+        "fn": 277,
+        "fpr": 0.009824561403508772,
+        "fnr": 0.9584775086505191
+      },
+      {
+        "range": "[100,inf)",
+        "n": 309,
+        "humans": 270,
+        "bots": 39,
+        "fp": 0,
+        "fn": 39,
+        "fpr": 0.0,
+        "fnr": 1.0
+      }
+    ]
+  },
+  "results": {
+    "profile-xgboost": {
+      "capacity": 2520,
+      "tp": 1522,
+      "fp": 998,
+      "precision": 0.6039682539682539,
+      "recall": 0.19859081419624217,
+      "ranking_metrics": {
+        "n": 29917,
+        "threshold": 0.5,
+        "precision_bot": 0.648854961832061,
+        "recall_bot": 0.13308977035490605,
+        "f1_bot": 0.2208748375920312,
+        "macro_f1": 0.5393278887750661,
+        "pr_auc": 0.4521459725160449,
+        "roc_auc": 0.6917282158808171,
+        "brier_score": 0.18584878742694855,
+        "confusion_matrix": [
+          [
+            21701,
+            552
+          ],
+          [
+            6644,
+            1020
+          ]
+        ]
+      },
+      "paired_bootstrap_precision_delta_95": [
+        0.0,
+        0.0
+      ]
+    },
+    "combined-xgboost": {
+      "capacity": 2520,
+      "tp": 1380,
+      "fp": 1140,
+      "precision": 0.5476190476190477,
+      "recall": 0.18006263048016702,
+      "ranking_metrics": {
+        "n": 29917,
+        "threshold": 0.5,
+        "precision_bot": 0.5486656200941915,
+        "recall_bot": 0.18241127348643008,
+        "f1_bot": 0.27379553466509987,
+        "macro_f1": 0.5621728469343394,
+        "pr_auc": 0.4378779116643333,
+        "roc_auc": 0.6982221504088445,
+        "brier_score": 0.18522240221500397,
+        "confusion_matrix": [
+          [
+            21103,
+            1150
+          ],
+          [
+            6266,
+            1398
+          ]
+        ]
+      },
+      "paired_bootstrap_precision_delta_95": [
+        -0.07449840538729328,
+        -0.03818997414309812
+      ]
+    },
+    "enhanced4": {
+      "capacity": 2520,
+      "tp": 1372,
+      "fp": 1148,
+      "precision": 0.5444444444444444,
+      "recall": 0.17901878914405012,
+      "ranking_metrics": {
+        "n": 29917,
+        "threshold": 0.5,
+        "precision_bot": 0.5443986511802174,
+        "recall_bot": 0.18958768267223383,
+        "f1_bot": 0.28123487854446916,
+        "macro_f1": 0.5655987527810526,
+        "pr_auc": 0.43809154138965456,
+        "roc_auc": 0.6976788514686909,
+        "brier_score": 0.18554405868053436,
+        "confusion_matrix": [
+          [
+            21037,
+            1216
+          ],
+          [
+            6211,
+            1453
+          ]
+        ]
+      },
+      "paired_bootstrap_precision_delta_95": [
+        -0.07687558414004438,
+        -0.04119076178942768
+      ]
+    },
+    "enhanced6": {
+      "capacity": 2520,
+      "tp": 1374,
+      "fp": 1146,
+      "precision": 0.5452380952380952,
+      "recall": 0.17927974947807934,
+      "ranking_metrics": {
+        "n": 29917,
+        "threshold": 0.5,
+        "precision_bot": 0.5399568034557235,
+        "recall_bot": 0.19572025052192066,
+        "f1_bot": 0.2873012832790653,
+        "macro_f1": 0.568314554823854,
+        "pr_auc": 0.43793410771186214,
+        "roc_auc": 0.6945875187291489,
+        "brier_score": 0.18710649013519287,
+        "confusion_matrix": [
+          [
+            20975,
+            1278
+          ],
+          [
+            6164,
+            1500
+          ]
+        ]
+      },
+      "paired_bootstrap_precision_delta_95": [
+        -0.07645852425143138,
+        -0.041076130540693125
+      ]
+    }
+  },
+  "plan_sha256": "d634751e0db65382fbadf3311fbb76a83e7fb94ef7fddf01b757b01d68fd519a",
+  "code_sha256": "2c6ec8bdd96007759be585432cda94603ff096768adb3f57714265ea4e3bf1e0",
+  "source_manifest_sha256": "7e41333e67b7ac80a3784cac90c8b74f9093e6422a6f644d0d703bb2f87b3ea1",
+  "limitations": [
+    "derived features add representation, not new observations",
+    "no target metadata; temporal features unavailable",
+    "bootstrap conditions on chosen validation queues, not selection-adjusted or independent confirmation"
+  ],
+  "artifacts_sha256": {
+    "enhanced4.joblib": "21ab49778972f94b1344a3c53ebce348554cb82c336540854e214e0ca28846da",
+    "enhanced6.joblib": "22614ced1cca2138f5537abd5bb50db3caa514bbac12fc19cb95690e8f1bece6"
+  },
+  "versions": {
+    "numpy": "2.5.4",
+    "sklearn": "1.9.1",
+    "xgboost": "3.4.1"
+  },
+  "feature_code_sha256": "2458972eb5ce4bc9d16ed9336419c9887fb2ebb0ca99571a021fd655fe903462"
+}
