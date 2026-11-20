@@ -437,3 +437,9 @@ docker compose ps
 Кандидат: `media/models/experiments/structural-shard7-weighted-v2-run1/model.joblib`, загружен ModelService, только review_only. В плане evaluation_policy=validation_only; evaluate отказывает до чтения test. Test этого этапа не читался; активный стенд не изменён. Проверка независимым reviewer: Important issues отсутствуют.
 
 Следующий предлагаемый этап: предфиксированное сравнение структурных и дополнительных переносимых профильных признаков на train/val, без настройки по test. Для реальной проверки Threads нужны настоящий экспорт/API и независимая разметка. Сам импорт/CRM уже существуют; синтетический пример не является контрольной выборкой.
+
+## Шесть сравнений выполнены — 2026-11-20
+
+Отчёт: docs/reports/2026-11-20-feature-model-comparison.md и .json. Profile/posts/combined × XGBoost/CatBoost, одинаковые train/val, фиксированные параметры, без test. Лучший PR-AUC profile-catboost0.45232 (profile-xgboost0.45215), лучший F1 combined-catboost0.48581. Ни одна модель не достигла precision90% с минимум100 predictions. Главный выигрыш от профиля, смена алгоритма дала мало; публикации поверх профиля снизили PR-AUC. Все пять profile features заполнены, но доступность в Threads ещё не подтверждена.
+
+Локальные research-only артефакты: media/models/experiments/feature-model-comparison-v3/. CatBoost не поддерживается ModelService; ничего не развёртывать автоматически. Новый скрипт scripts/compare_feature_models.py, config experiments/feature-model-comparison.json, дополнительная зависимость requirements-research.txt. Следующий шаг: анализ ошибок/источников профильного сигнала, сбор последовательных наблюдений и независимого Threads holdout.
