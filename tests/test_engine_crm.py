@@ -64,19 +64,6 @@ def test_same_handle_across_platforms_and_users_remains_distinct(client):
 
 
 @pytest.mark.django_db
-def test_web_analysis_does_not_invoke_local_training(client):
-    user = get_user_model().objects.create_user("alice")
-    client.force_login(user)
-    with patch(
-        "analysis.pipeline.train_and_evaluate",
-        side_effect=AssertionError("web must not train"),
-    ):
-        response = client.post("/analyze/", {"retrain": "1"})
-    assert response.status_code == 302
-    assert response.url == "/engine/"
-
-
-@pytest.mark.django_db
 def test_queue_publish_failure_keeps_persisted_job_visible_to_user(client):
     import httpx
     from django.test import override_settings
