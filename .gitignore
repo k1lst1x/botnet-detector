@@ -6,6 +6,19 @@ db.sqlite3
 media/
 staticfiles/
 datasets/
-data/raw/
 .env
 .DS_Store
+
+# Raw and prepared research datasets
+data/raw/
+data/processed/
+
+.pytest_cache/
+engine.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+.env.*
+!.env.example
+
+# Сгенерированные файлы диплома (собираются thesis/build_pdf.py)
+thesis/build/

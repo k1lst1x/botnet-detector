@@ -1,0 +1,75 @@
+{
+  "download": {
+    "source_url": "https://www.kaggle.com/datasets/abdelwahedomar/twibot",
+    "retrieved_at_utc": "2026-11-19T12:44:08.562322+00:00",
+    "scope": "third-party single tweet shard; not full TwiBot-22",
+    "official_author_verified": false,
+    "archive_bytes": 1781757756,
+    "archive_sha256": "8bb89c1d9e1980b091c74c69719a48c0a631cd85b0203d2445fbaafaf881cf2e",
+    "source_etag": "\"0d1777d7b2e8b12dc719b229d33afeee\"",
+    "source_cloud_md5_verified": true,
+    "file_sha256": "5dd415d4fc8c6733f557657eaa3d8a3cfd215580786338bd93af766045d36036",
+    "file": "tweet_7-004.json",
+    "file_bytes": 11923856722,
+    "zip_crc_verified": true,
+    "expected_record_fields": [
+      "id",
+      "author_id",
+      "created_at",
+      "text"
+    ],
+    "missing": [
+      "remaining official tweet data (completeness unverified)",
+      "edge.csv",
+      "official release confirmation"
+    ]
+  },
+  "prepared_sample": {
+    "scope": "first N tweets from a third-party single shard; not full TwiBot-22",
+    "requested_tweets": 10000,
+    "unmatched_author_tweets": 0,
+    "matched_accounts": 406,
+    "classes": {
+      "human": 395,
+      "bot": 11
+    },
+    "official_splits_preserved": true,
+    "split_counts": {
+      "train": 349,
+      "val": 34,
+      "test": 23
+    },
+    "source_file": "data/raw/twibot22-kaggle-shard7/tweet_7-004.json",
+    "author_id_normalization": "numeric native IDs mapped only when official u-prefixed label exists",
+    "complete_timeline": false,
+    "training_performed": false,
+    "prepared_rows": 406,
+    "validation": {
+      "splits": {
+        "train": {
+          "rows": 349,
+          "classes": [
+            0,
+            1
+          ]
+        },
+        "val": {
+          "rows": 34,
+          "classes": [
+            0,
+            1
+          ]
+        },
+        "test": {
+          "rows": 23,
+          "classes": [
+            0,
+            1
+          ]
+        }
+      },
+      "feature_version": "portable-v1",
+      "behavior_available": true
+    }
+  }
+}

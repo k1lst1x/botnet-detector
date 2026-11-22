@@ -1,0 +1,54 @@
+{
+  "status": "frozen_weighted_validation_experiment",
+  "prepared_directory": "data/processed/twibot22-shard7-training-v1",
+  "feature_version": "portable-v1",
+  "seed": 42,
+  "base_features": [
+    "duplicate_ratio",
+    "text_length_median",
+    "text_length_cv",
+    "text_digit_ratio",
+    "text_space_ratio",
+    "text_punctuation_ratio",
+    "url_ratio",
+    "unique_domains",
+    "domain_concentration"
+  ],
+  "include_missing_masks": true,
+  "excluded": [
+    "profile features",
+    "temporal rates and intervals",
+    "reply/repost/quote flags with incompatible coverage",
+    "IDs",
+    "split",
+    "label as input"
+  ],
+  "minimum_posts_at_inference": 20,
+  "models_to_compare": [
+    "prior baseline",
+    "XGBoost"
+  ],
+  "fit_split": "train",
+  "selection_split": "val",
+  "final_evaluation_split": "test",
+  "proposed_validation_min_precision": 0.9,
+  "precision_target_is_not_a_guarantee": true,
+  "threads_quality_validated": false,
+  "numeric_arrays_directory": "data/processed/twibot22-shard7-structural-arrays-v1",
+  "prepared_manifest_sha256": "7e41333e67b7ac80a3784cac90c8b74f9093e6422a6f644d0d703bb2f87b3ea1",
+  "arrays_manifest_sha256": "e703159cf8933aa8733d6de36214015fa1e5428c2272e43f3842895ebb567cb0",
+  "validation_min_predictions": 100,
+  "xgboost": {
+    "n_estimators": 300,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "subsample": 0.9,
+    "colsample_bytree": 0.8,
+    "n_jobs": 4,
+    "random_state": 42,
+    "tree_method": "hist",
+    "scale_pos_weight": 21.732908201097434
+  },
+  "weight_source": "human_train / bot_train = 146545 / 6743; no val labels used for weight",
+  "evaluation_policy": "validation_only; previously viewed test is not a fresh holdout"
+}

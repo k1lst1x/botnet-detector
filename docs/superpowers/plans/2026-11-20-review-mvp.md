@@ -1,0 +1,3 @@
+# Practical review MVP
+
+User authorized usable MVP without mandatory90%. Reuse profile XGBoost, package train-only fitted model with validation-selected threshold precision≥.6/support100, no retraining/test. Require all profile inputs, allow zero posts. Add review_queue decisions, clear Russian CRM labels and score sorting with nulls last. Preserve manual labels. Validate real artifact, import booleans, complete suite, independent review, then local Docker end-to-end smoke. Done; no automatic bot/human classification or claim of Threads quality. Profile-only import uses canonical JSON, example provided.

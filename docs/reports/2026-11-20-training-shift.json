@@ -1,0 +1,1517 @@
+{
+  "scope": "train/val only; no test read",
+  "train": {
+    "rows": 153288,
+    "bots": 6743,
+    "bot_rate": 0.04398909242732634
+  },
+  "val": {
+    "rows": 29917,
+    "bots": 7664,
+    "bot_rate": 0.2561754186582879
+  },
+  "train_positive_weight": 21.732908201097434,
+  "features": {
+    "duplicate_ratio": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.976190447807312
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.9846153855323792
+          }
+        },
+        "ks_statistic": 0.03917896747589111
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.976190447807312
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.9846153855323792
+          }
+        },
+        "ks_statistic": 0.034533143043518066
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.9642857313156128
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.9750000238418579
+          }
+        },
+        "ks_statistic": 0.018248677253723145
+      }
+    },
+    "text_length_median": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 3.0,
+            "p25": 86.0,
+            "median": 130.0,
+            "p75": 142.0,
+            "max": 875.5
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 8.0,
+            "p25": 97.0,
+            "median": 141.0,
+            "p75": 142.0,
+            "max": 826.5
+          }
+        },
+        "ks_statistic": 0.10267382860183716
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 3.0,
+            "p25": 86.0,
+            "median": 130.0,
+            "p75": 142.0,
+            "max": 875.5
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 8.0,
+            "p25": 95.0,
+            "median": 141.0,
+            "p75": 142.0,
+            "max": 726.0
+          }
+        },
+        "ks_statistic": 0.0928347110748291
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 4.0,
+            "p25": 87.5,
+            "median": 133.0,
+            "p75": 142.0,
+            "max": 783.5
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 14.5,
+            "p25": 103.5,
+            "median": 142.0,
+            "p75": 156.0,
+            "max": 826.5
+          }
+        },
+        "ks_statistic": 0.11752673983573914
+      }
+    },
+    "text_length_cv": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.32534338533878326,
+            "median": 0.4508892297744751,
+            "p75": 0.5851055532693863,
+            "max": 2.6845929622650146
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.25951698422431946,
+            "median": 0.393726110458374,
+            "p75": 0.5368139147758484,
+            "max": 2.1028599739074707
+          }
+        },
+        "ks_statistic": 0.11793789267539978
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.3270573318004608,
+            "median": 0.45200368762016296,
+            "p75": 0.5861606001853943,
+            "max": 2.6845929622650146
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.2684627175331116,
+            "median": 0.4026072025299072,
+            "p75": 0.545707643032074,
+            "max": 1.6316909790039062
+          }
+        },
+        "ks_statistic": 0.10477593541145325
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.2839697003364563,
+            "median": 0.4269900321960449,
+            "p75": 0.5645773410797119,
+            "max": 1.9204858541488647
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.23225179314613342,
+            "median": 0.36916956305503845,
+            "p75": 0.5101892203092575,
+            "max": 2.1028599739074707
+          }
+        },
+        "ks_statistic": 0.11439520120620728
+      }
+    },
+    "text_digit_ratio": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.01063358411192894,
+            "median": 0.015122388489544392,
+            "p75": 0.021726366132497787,
+            "max": 1.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.011159227229654789,
+            "median": 0.016234371811151505,
+            "p75": 0.02395452745258808,
+            "max": 0.39364004135131836
+          }
+        },
+        "ks_statistic": 0.057931363582611084
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.010617616586387157,
+            "median": 0.015080112963914871,
+            "p75": 0.021650629118084908,
+            "max": 1.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.011180855333805084,
+            "median": 0.016195617616176605,
+            "p75": 0.023770038038492203,
+            "max": 0.26946428418159485
+          }
+        },
+        "ks_statistic": 0.05797511339187622
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.011015618685632944,
+            "median": 0.01607297919690609,
+            "p75": 0.023732850328087807,
+            "max": 0.33605754375457764
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.011086803860962391,
+            "median": 0.016303453594446182,
+            "p75": 0.024481371976435184,
+            "max": 0.39364004135131836
+          }
+        },
+        "ks_statistic": 0.02162379026412964
+      }
+    },
+    "text_space_ratio": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.13135592639446259,
+            "median": 0.14234310388565063,
+            "p75": 0.15078197047114372,
+            "max": 0.6811960339546204
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.12352827936410904,
+            "median": 0.1376192420721054,
+            "p75": 0.14806430041790009,
+            "max": 0.6475731134414673
+          }
+        },
+        "ks_statistic": 0.1268157660961151
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.13166986405849457,
+            "median": 0.1425025910139084,
+            "p75": 0.15086206793785095,
+            "max": 0.6811960339546204
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.12417491525411606,
+            "median": 0.13805601000785828,
+            "p75": 0.14823594689369202,
+            "max": 0.6475731134414673
+          }
+        },
+        "ks_statistic": 0.12227833271026611
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.12386675551533699,
+            "median": 0.1381741315126419,
+            "p75": 0.14849703013896942,
+            "max": 0.4090307056903839
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.12173966504633427,
+            "median": 0.13632623851299286,
+            "p75": 0.14750195294618607,
+            "max": 0.3825782537460327
+          }
+        },
+        "ks_statistic": 0.047432154417037964
+      }
+    },
+    "text_punctuation_ratio": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.05889570713043213,
+            "median": 0.06775213405489922,
+            "p75": 0.07849433273077011,
+            "max": 0.7117310166358948
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.06149567291140556,
+            "median": 0.07172577828168869,
+            "p75": 0.08577932417392731,
+            "max": 0.3175528943538666
+          }
+        },
+        "ks_statistic": 0.113639235496521
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.05882352963089943,
+            "median": 0.06761496514081955,
+            "p75": 0.07820364087820053,
+            "max": 0.7117310166358948
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.061228904873132706,
+            "median": 0.07133891433477402,
+            "p75": 0.08520900458097458,
+            "max": 0.3175528943538666
+          }
+        },
+        "ks_statistic": 0.10816699266433716
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0024602997582405806,
+            "p25": 0.060841476544737816,
+            "median": 0.07133243978023529,
+            "p75": 0.08415911719202995,
+            "max": 0.24383844435214996
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.06214689090847969,
+            "median": 0.07298444956541061,
+            "p75": 0.08751796185970306,
+            "max": 0.23625165224075317
+          }
+        },
+        "ks_statistic": 0.04837876558303833
+      }
+    },
+    "url_ratio": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.2195121943950653,
+            "median": 0.3658536672592163,
+            "p75": 0.6052631735801697,
+            "max": 1.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.22499999403953552,
+            "median": 0.4390243887901306,
+            "p75": 0.8048780560493469,
+            "max": 1.0
+          }
+        },
+        "ks_statistic": 0.11689066886901855
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.2195121943950653,
+            "median": 0.3658536672592163,
+            "p75": 0.6000000238418579,
+            "max": 1.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.23000000417232513,
+            "median": 0.4375,
+            "p75": 0.800000011920929,
+            "max": 1.0
+          }
+        },
+        "ks_statistic": 0.11397331953048706
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.20000000298023224,
+            "median": 0.39024388790130615,
+            "p75": 0.7250000238418579,
+            "max": 1.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.21875,
+            "median": 0.44117647409439087,
+            "p75": 0.8500000238418579,
+            "max": 1.0
+          }
+        },
+        "ks_statistic": 0.07454782724380493
+      }
+    },
+    "unique_domains": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 20.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 17.0
+          }
+        },
+        "ks_statistic": 0.012116096913814545
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 20.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 17.0
+          }
+        },
+        "ks_statistic": 0.009581958875060081
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 11.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 11.0
+          }
+        },
+        "ks_statistic": 0.0041550397872924805
+      }
+    },
+    "domain_concentration": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 151492,
+          "missing_rate": 0.011716507489170747,
+          "quantiles": {
+            "min": 0.06198346987366676,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 1.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29204,
+          "missing_rate": 0.02383260353645089,
+          "quantiles": {
+            "min": 0.14863258600234985,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 1.0
+          }
+        },
+        "ks_statistic": 0.012000124901533127
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 144966,
+          "missing_rate": 0.010774847316523894,
+          "quantiles": {
+            "min": 0.06198346987366676,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 1.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 21800,
+          "missing_rate": 0.020356805823933843,
+          "quantiles": {
+            "min": 0.14863258600234985,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 1.0
+          }
+        },
+        "ks_statistic": 0.009923741221427917
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6526,
+          "missing_rate": 0.03218152157793264,
+          "quantiles": {
+            "min": 0.16955018043518066,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 1.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7404,
+          "missing_rate": 0.03392484342379953,
+          "quantiles": {
+            "min": 0.1666666716337204,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 1.0
+          }
+        },
+        "ks_statistic": 0.005994223058223724
+      }
+    },
+    "duplicate_ratio__missing": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      }
+    },
+    "text_length_median__missing": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      }
+    },
+    "text_length_cv__missing": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      }
+    },
+    "text_digit_ratio__missing": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      }
+    },
+    "text_space_ratio__missing": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      }
+    },
+    "text_punctuation_ratio__missing": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      }
+    },
+    "url_ratio__missing": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      }
+    },
+    "unique_domains__missing": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0
+          }
+        },
+        "ks_statistic": 0.0
+      }
+    },
+    "domain_concentration__missing": {
+      "all": {
+        "train": {
+          "rows": 153288,
+          "observed": 153288,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 1.0
+          }
+        },
+        "val": {
+          "rows": 29917,
+          "observed": 29917,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 1.0
+          }
+        },
+        "ks_statistic": 0.01211613416671753
+      },
+      "human": {
+        "train": {
+          "rows": 146545,
+          "observed": 146545,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 1.0
+          }
+        },
+        "val": {
+          "rows": 22253,
+          "observed": 22253,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 1.0
+          }
+        },
+        "ks_statistic": 0.009581983089447021
+      },
+      "bot": {
+        "train": {
+          "rows": 6743,
+          "observed": 6743,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 1.0
+          }
+        },
+        "val": {
+          "rows": 7664,
+          "observed": 7664,
+          "missing_rate": 0.0,
+          "quantiles": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 1.0
+          }
+        },
+        "ks_statistic": 0.001743316650390625
+      }
+    }
+  },
+  "arrays_manifest_sha256": "e703159cf8933aa8733d6de36214015fa1e5428c2272e43f3842895ebb567cb0",
+  "payload_sha256": {
+    "train.X.npy": "404884f3eb9957671898dda10d5dec75755be3c09b29d9ecc07e082efb7bde33",
+    "train.y.npy": "31d3bd8b26c886c0483e99590c5a0b5d95a7ea0187c06e345c0ec577cc662a22",
+    "val.X.npy": "8fc765eed0b1e0cf12c468f9fba10b360bc71b5acf48edb0fb44d29cb3c449c2",
+    "val.y.npy": "48a07f14e3cf5d214d8b2865ac1bb7e6296863a3ec294feb144ea5bfff86da56"
+  }
+}

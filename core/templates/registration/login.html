@@ -1,0 +1,7 @@
+{% extends "core/base.html" %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<section class="card"><h1>Вход в CRM</h1>
+<form method="post" class="stack">{% csrf_token %}{{ form.as_p }}<input type="hidden" name="next" value="{{ next }}"><button class="btn">Войти</button></form>
+</section>
+{% endblock %}

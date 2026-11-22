@@ -1,0 +1,3 @@
+# Observation history preparation
+
+Scope: build offline merger for repeated canonical Dataset imports, retain provenance and deduplicate posts. Never infer complete timeline from keyword search or multiple incomplete files. Conflicting duplicate posts/identities fail rather than silently replace. Account snapshots chosen by known latest collected_at; equal/unknown conflicting snapshots fail. Even merged complete windows conservatively marked incomplete pending explicit coverage certification. Provide coverage/readiness report and documentation. No training/deployment/claims of acquired real Threads data. Tests cover duplicates, conflicts, incomplete coverage and profile freshness.

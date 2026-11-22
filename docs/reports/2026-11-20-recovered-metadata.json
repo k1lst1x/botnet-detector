@@ -1,0 +1,197 @@
+{
+  "scope": "validation exploratory, no deployment",
+  "extraction": {
+    "audit": {
+      "raw_records": 10000000,
+      "selected_records": 8312220,
+      "text_entity_count_disagreement": 1890089,
+      "invalid_metadata": 1
+    },
+    "rows": 183205,
+    "train_rows": 153288,
+    "ids_sha256": "ebb5bc11b3a045a3c2c10d7ebc57c63f8131062b6d9f7752775149354372d810",
+    "metadata_sha256": "8d7ed490704bfb777aaf39683dff1db3a3213b2747cb5fe2a556971e2618b6fc",
+    "raw_sha256": "5dd415d4fc8c6733f557657eaa3d8a3cfd215580786338bd93af766045d36036"
+  },
+  "results": {
+    "active_profile": {
+      "capacity": 2520,
+      "tp": 1522,
+      "fp": 998,
+      "precision": 0.6039682539682539,
+      "recall": 0.19859081419624217
+    },
+    "profile_metadata": {
+      "capacity": 2520,
+      "tp": 1438,
+      "fp": 1082,
+      "precision": 0.5706349206349206,
+      "recall": 0.1876304801670146,
+      "ranking_metrics": {
+        "n": 29917,
+        "threshold": 0.5,
+        "precision_bot": 0.6236825790452573,
+        "recall_bot": 0.13126304801670147,
+        "f1_bot": 0.21688045704430312,
+        "macro_f1": 0.5365906330160891,
+        "pr_auc": 0.44807636988067734,
+        "roc_auc": 0.6931069795707685,
+        "brier_score": 0.1849576085805893,
+        "confusion_matrix": [
+          [
+            21646,
+            607
+          ],
+          [
+            6658,
+            1006
+          ]
+        ]
+      }
+    },
+    "combined_metadata": {
+      "capacity": 2520,
+      "tp": 1378,
+      "fp": 1142,
+      "precision": 0.5468253968253968,
+      "recall": 0.1798016701461378,
+      "ranking_metrics": {
+        "n": 29917,
+        "threshold": 0.5,
+        "precision_bot": 0.5466879489225858,
+        "recall_bot": 0.17875782881002086,
+        "f1_bot": 0.2694198623402163,
+        "macro_f1": 0.559907257201036,
+        "pr_auc": 0.43482593605744,
+        "roc_auc": 0.6970517310560365,
+        "brier_score": 0.1855744570493698,
+        "confusion_matrix": [
+          [
+            21117,
+            1136
+          ],
+          [
+            6294,
+            1370
+          ]
+        ]
+      }
+    }
+  },
+  "reload_verified": true,
+  "artifacts_sha256": {
+    "profile.joblib": "8541a35cc03870cdee2a7735f1c04afb4eb15a864a6360fa533f7750664a2434",
+    "combined.joblib": "c5fdac6cf602300df0b7367c0c30a672645cac55accaa4ea3acbf9d5eb1e47be"
+  },
+  "plan": {
+    "parent": {
+      "prepared_directory": "data/processed/twibot22-shard7-training-v1",
+      "prepared_manifest_sha256": "7e41333e67b7ac80a3784cac90c8b74f9093e6422a6f644d0d703bb2f87b3ea1",
+      "output": "media/models/experiments/feature-model-comparison-v3",
+      "profile": [
+        "followers_log1p",
+        "following_log1p",
+        "followers_following_ratio",
+        "bio_present",
+        "avatar_present"
+      ],
+      "posts": [
+        "duplicate_ratio",
+        "text_length_median",
+        "text_length_cv",
+        "text_digit_ratio",
+        "text_space_ratio",
+        "text_punctuation_ratio",
+        "url_ratio",
+        "unique_domains",
+        "domain_concentration"
+      ],
+      "xgboost": {
+        "n_estimators": 300,
+        "max_depth": 4,
+        "learning_rate": 0.05,
+        "subsample": 0.9,
+        "colsample_bytree": 0.8,
+        "n_jobs": 4,
+        "random_state": 42,
+        "tree_method": "hist"
+      },
+      "catboost": {
+        "iterations": 300,
+        "depth": 4,
+        "learning_rate": 0.05,
+        "random_seed": 42,
+        "thread_count": 4,
+        "verbose": false,
+        "allow_writing_files": false,
+        "loss_function": "Logloss"
+      },
+      "evaluation_policy": "validation_only",
+      "precision_target": 0.9,
+      "minimum_predictions": 100,
+      "class_weights": false,
+      "early_stopping": false
+    },
+    "features": [
+      "entity_url_known_ratio",
+      "entity_target_known_ratio",
+      "entity_url_post_ratio",
+      "entity_domain_count",
+      "entity_domain_concentration",
+      "entity_url_repeat_ratio",
+      "entity_target_post_ratio",
+      "entity_target_count",
+      "entity_target_concentration"
+    ],
+    "capacity": 2520,
+    "source_sha256": "5dd415d4fc8c6733f557657eaa3d8a3cfd215580786338bd93af766045d36036",
+    "design_sha256": "8f609162014cb4a5ee2d1dd6142717d3d75b1766eda8dd83aa0a5b7487cc3b89",
+    "recovery_identity": {
+      "prepared_manifest_sha256": "7e41333e67b7ac80a3784cac90c8b74f9093e6422a6f644d0d703bb2f87b3ea1",
+      "features": [
+        "entity_url_known_ratio",
+        "entity_target_known_ratio",
+        "entity_url_post_ratio",
+        "entity_domain_count",
+        "entity_domain_concentration",
+        "entity_url_repeat_ratio",
+        "entity_target_post_ratio",
+        "entity_target_count",
+        "entity_target_concentration"
+      ],
+      "extractor_sha256": "2830fea45911bc83525083d6f5ebfab468915ee9b284e12e797f1aa6509492d1",
+      "selection": "bottom100 BLAKE2b seed42 canonical ID",
+      "index_state_sha256": "f6fdbba6551f6d328ab109870f5f94584168ca9cfad98c3cf9a2968f76ab5571"
+    }
+  },
+  "versions": {
+    "sklearn": "1.9.1",
+    "xgboost": "3.4.1",
+    "numpy": "2.5.4"
+  },
+  "coverage": {
+    "train": {
+      "entity_url_known_ratio": 1.0,
+      "entity_target_known_ratio": 1.0,
+      "entity_url_post_ratio": 0.9999347633213298,
+      "entity_domain_count": 0.9999347633213298,
+      "entity_domain_concentration": 0.9296813840613747,
+      "entity_url_repeat_ratio": 0.9296813840613747,
+      "entity_target_post_ratio": 0.9941743645947497,
+      "entity_target_count": 0.9941743645947497,
+      "entity_target_concentration": 0.9541581858984396
+    },
+    "val": {
+      "entity_url_known_ratio": 1.0,
+      "entity_target_known_ratio": 1.0,
+      "entity_url_post_ratio": 0.9999331483771768,
+      "entity_domain_count": 0.9999331483771768,
+      "entity_domain_concentration": 0.8821071631513855,
+      "entity_url_repeat_ratio": 0.8821071631513855,
+      "entity_target_post_ratio": 0.9965237156131965,
+      "entity_target_count": 0.9965237156131965,
+      "entity_target_concentration": 0.902530333923856
+    }
+  },
+  "provenance_note": "First scan executed before addition of resume identity guard; extraction formulas unchanged. Recovery identity recorded during scan and verified afterwards."
+}

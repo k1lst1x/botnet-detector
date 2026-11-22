@@ -1,0 +1,12 @@
+{% extends "core/base.html" %}
+{% block title %}Моя CRM{% endblock %}
+{% block content %}
+<section class="head"><div><p class="eyebrow">аккаунты · ручная разметка</p><h1>Моя CRM</h1></div><a href="{% url 'engine_jobs' %}" class="btn">Новый анализ</a></section>
+<p class="muted">Индекс модели не является вероятностью бота. Качество на Threads ещё не проверено. Ручная метка хранится отдельно от решения модели и не запускает обучение.</p>
+{% for account in accounts %}<section class="card"><h2>{{ account.platform }} · {{ account.username|default:account.external_user_id }}</h2>
+<p>Решение модели: {% if account.decision == "priority_review" %}Приоритетная проверка{% elif account.decision == "standard_review" %}Обычная очередь{% elif account.decision == "insufficient_data" %}Недостаточно данных{% else %}{{ account.decision|default:"нет оценки" }}{% endif %} · оценка: {{ account.score|default_if_none:"—" }} · версия: {{ account.model_version|default:"—" }}</p>
+<form method="post" action="{% url 'engine_label' account.pk %}" class="stack">{% csrf_token %}
+<label>Ручная метка <select name="label"><option value="unknown" {% if account.label == 'unknown' %}selected{% endif %}>Не определено</option><option value="human" {% if account.label == 'human' %}selected{% endif %}>Человек</option><option value="bot" {% if account.label == 'bot' %}selected{% endif %}>Бот</option></select></label>
+<label>Заметки <textarea name="notes" maxlength="10000">{{ account.notes }}</textarea></label><button class="btn ghost">Сохранить разметку</button></form></section>
+{% empty %}<section class="card">Аккаунтов пока нет. Загрузите публикации, запустите проверку и обновите состояние задания.</section>{% endfor %}
+{% endblock %}
