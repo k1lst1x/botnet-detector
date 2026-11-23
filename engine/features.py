@@ -50,6 +50,93 @@ BASE_FEATURES = PROFILE_FEATURES + PORTABLE_FEATURES
 FEATURE_NAMES = BASE_FEATURES + [f"{name}__missing" for name in BASE_FEATURES]
 URL_PATTERN = re.compile(r"https?://[^\s<>]+", re.IGNORECASE)
 
+# profile-v2: profile fields exposed by both Twitter and the Threads profile API.
+# followers_log1p, bio_present and avatar_present are shared with portable-v1.
+# Verification is deliberately excluded: in TwiBot-22 all verified accounts are in
+# train (and all human), val/test have none, and Threads verification can be bought.
+PROFILE_VERSION = "profile-v2"
+PROFILE_EXTRA_FEATURES = [
+    "bio_length",
+    "bio_url_count",
+    "bio_mention_count",
+    "bio_hashtag_count",
+    "bio_digit_ratio",
+    "avatar_default",
+    "name_length",
+    "name_digit_ratio",
+    "name_non_alnum_ratio",
+    "username_length",
+    "username_digit_ratio",
+    "username_trailing_digits",
+    "username_underscore_count",
+    "name_username_overlap",
+]
+PROFILE_V2_FEATURES = [
+    "followers_log1p", "bio_present", *PROFILE_EXTRA_FEATURES[:5],
+    "avatar_present", *PROFILE_EXTRA_FEATURES[5:],
+]
+_BIO_URL = re.compile(r"https?://\S+")
+_MENTION = re.compile(r"@\w+")
+_HASHTAG = re.compile(r"#\w+")
+
+
+def _share(count, total):
+    return count / total if total else 0.0
+
+
+def name_username_overlap(name, username):
+    """Share of username letters found, in order, in the display name."""
+    a = re.sub(r"[^a-z]", "", name.lower())
+    b = re.sub(r"[^a-z]", "", username.lower())
+    if not a or not b:
+        return 0.0
+    i = 0
+    for ch in a:
+        if i < len(b) and b[i] == ch:
+            i += 1
+    return i / len(b)
+
+
+def profile_text_features(biography, name, username, avatar_default):
+    """profile-v2 extras; None marks an unknown source field.
+
+    The same function builds training rows (TwiBot-22) and inference rows.
+    """
+    f = dict.fromkeys(PROFILE_EXTRA_FEATURES)
+    if biography is not None:
+        bio = unicodedata.normalize("NFKC", biography)
+        f["bio_length"] = float(len(bio))
+        f["bio_url_count"] = float(len(_BIO_URL.findall(bio)))
+        f["bio_mention_count"] = float(len(_MENTION.findall(bio)))
+        f["bio_hashtag_count"] = float(len(_HASHTAG.findall(bio)))
+        f["bio_digit_ratio"] = _share(sum(c.isdigit() for c in bio), len(bio))
+    if avatar_default is not None:
+        f["avatar_default"] = float(avatar_default)
+    if name is not None:
+        name = unicodedata.normalize("NFKC", name)
+        f["name_length"] = float(len(name))
+        f["name_digit_ratio"] = _share(sum(c.isdigit() for c in name), len(name))
+        f["name_non_alnum_ratio"] = _share(
+            sum(not (c.isalnum() or c.isspace()) for c in name), len(name)
+        )
+    if username is not None:
+        f["username_length"] = float(len(username))
+        f["username_digit_ratio"] = _share(sum(c.isdigit() for c in username), len(username))
+        f["username_trailing_digits"] = float(len(username) - len(username.rstrip("0123456789")))
+        f["username_underscore_count"] = float(username.count("_"))
+    if name is not None and username is not None:
+        f["name_username_overlap"] = name_username_overlap(name, username)
+    return f
+
+
+def extract_profile_features(account: AccountSnapshot):
+    return profile_text_features(
+        account.biography,
+        account.display_name,
+        account.username,
+        account.avatar_default,
+    )
+
 
 def parsed_url(value):
     try:

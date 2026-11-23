@@ -2,7 +2,7 @@
 
 from collections import defaultdict
 
-from .features import FEATURE_VERSION, extract_features
+from .features import FEATURE_VERSION, extract_features, extract_profile_features
 
 
 def review_decision(score, threshold):
@@ -26,6 +26,7 @@ def analyze_dataset(data, model):
             if len(selected) < len(posts):
                 observation = observation.model_copy(update={"complete": False, "truncated": True})
         row = extract_features(account, selected, observation)
+        row.update(extract_profile_features(account))
         status = model.status()
         warnings = []
         score = None
@@ -94,7 +95,7 @@ def analyze_dataset(data, model):
                 "score": score,
                 "decision": decision,
                 "model_version": status["model_version"],
-                "feature_version": FEATURE_VERSION,
+                "feature_version": (model.bundle or {}).get("feature_version", FEATURE_VERSION),
                 "coverage": coverage,
                 "warnings": warnings,
                 "features": row,
