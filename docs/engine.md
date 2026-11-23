@@ -94,7 +94,8 @@ Compose использует прежние 8000/8001.
 
 CSV/JSONL: одна строка — одна публикация. Обязательны author_id, post_id,
 created_at с часовым поясом. platform по умолчанию threads; text может быть null.
-Дополнительно username/handle, followers, following, biography,
+Дополнительно username/handle, followers, following, biography, has_avatar,
+name (display_name), is_verified, avatar_default (аватар по умолчанию),
 is_reply, is_repost, is_quote, has_media. Пустой boolean = неизвестен,
 true/false/1/0 — известен. Противоречивые профили и повторяющиеся post_id отклоняются.
 Если передан только handle/username, используется отдельный ID username:…
@@ -157,6 +158,20 @@ precision/recall/F1 bot, macro-F1, PR-AUC, ROC-AUC, Brier и confusion matrix.
 зависимостей. Это baseline с некалиброванным score; до контрольной разметки Threads
 его нельзя объявлять точной вероятностью бота. Подбор гиперпараметров, калибровка,
 ablation и оценка переноса — следующий исследовательский этап.
+
+## Профильная модель profile-v2
+
+Признаки profile-v2 (18 шт., engine.features.PROFILE_V2_FEATURES) считаются одной функцией
+profile_text_features и при обучении на TwiBot-22, и при оценке аккаунтов Threads:
+подписчики, описание (наличие, длина, ссылки, упоминания, хэштеги, доля цифр), аватар и аватар
+по умолчанию, верификация, имя и username (длины, доли цифр и спецсимволов, цифры в конце,
+подчёркивания, совпадение имени и username). Неизвестное поле остаётся пропуском и заполняется
+медианой train внутри артефакта. Для оценки нужны минимум подписчики, описание, username и имя.
+
+Сборка: `scripts.train_full_profile` (обучение на 700 тыс. профилей) →
+`scripts.build_profile_v2_model` (артефакт media/models/review-profile-v2/, порог —
+максимальный recall при precision ≥0,7 на val). Результаты:
+[отчёт](reports/2026-11-23-full-profile-comparison.md). Качество на Threads не проверено.
 
 FastAPI/worker читают ENGINE_MODEL_PATH (по умолчанию media/models/portable.joblib).
 Артефакт должен быть доверенным: joblib может выполнять Python при загрузке.

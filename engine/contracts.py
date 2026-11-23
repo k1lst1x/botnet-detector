@@ -36,6 +36,9 @@ class AccountSnapshot(Contract):
     following: int | None = Field(default=None, ge=0)
     biography: str | None = None
     has_avatar: bool | None = None
+    display_name: str | None = None
+    is_verified: bool | None = None
+    avatar_default: bool | None = None
     available_fields: list[str] = Field(default_factory=list)
     identity_source: Literal["platform_id", "username_fallback"] = "platform_id"
 

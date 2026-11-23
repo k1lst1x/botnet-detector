@@ -69,6 +69,9 @@ def read_import(content: str, format: str) -> Dataset:
             else None,
             biography=row.get("biography"),
             has_avatar=_boolean(row.get("has_avatar")),
+            display_name=row.get("display_name") or row.get("name") or None,
+            is_verified=_boolean(row.get("is_verified")),
+            avatar_default=_boolean(row.get("avatar_default")),
         )
         key = account.key
         if key in accounts and accounts[key] != account:
@@ -293,6 +296,11 @@ def prepare_twibot(
                             following=metrics.get("following_count"),
                             biography=raw.get("description"),
                             has_avatar=bool(raw["profile_image_url"])
+                            if raw.get("profile_image_url") is not None
+                            else None,
+                            display_name=raw.get("name"),
+                            is_verified=raw.get("verified"),
+                            avatar_default="default_profile_images" in raw["profile_image_url"]
                             if raw.get("profile_image_url") is not None
                             else None,
                         )

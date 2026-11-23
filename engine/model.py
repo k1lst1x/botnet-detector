@@ -26,6 +26,8 @@ from .features import (
     FEATURE_NAMES,
     FEATURE_VERSION,
     PORTABLE_FEATURES,
+    PROFILE_EXTRA_FEATURES,
+    PROFILE_VERSION,
     PROFILE_FEATURES,
 )
 
@@ -54,11 +56,11 @@ class ModelService:
                 # Only operator-controlled artifacts are trusted; no upload-model endpoint.
                 bundle = joblib.load(self.path)
                 names = bundle["features"]
-                if (
-                    bundle["feature_version"] != FEATURE_VERSION
-                    or not names
-                    or not set(names) <= set(FEATURE_NAMES)
-                ):
+                allowed = {
+                    FEATURE_VERSION: set(FEATURE_NAMES),
+                    PROFILE_VERSION: set(FEATURE_NAMES) | set(PROFILE_EXTRA_FEATURES),
+                }.get(bundle["feature_version"])
+                if allowed is None or not names or not set(names) <= allowed:
                     raise ValueError("Incompatible features")
                 if len(set(names)) != len(names) or not 0 <= bundle["threshold"] <= 1:
                     raise ValueError("Invalid artifact")
@@ -96,7 +98,7 @@ class ModelService:
         return {
             "status": "ready",
             "model_version": self.bundle["model_version"],
-            "feature_version": FEATURE_VERSION,
+            "feature_version": self.bundle["feature_version"],
             "feature_set": self.bundle["feature_set"],
         }
 
