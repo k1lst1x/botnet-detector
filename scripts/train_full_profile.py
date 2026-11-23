@@ -4,7 +4,7 @@ Three feature sets are compared with identical training protocol:
 
 * ``baseline5``  – the five profile features of the active review model;
 * ``portable``   – profile fields that the Threads API also exposes
-                   (followers, biography, avatar, verified, name, username);
+                   (followers, biography, avatar, name, username; verification excluded);
 * ``twitter``    – ``portable`` plus Twitter-only fields (following, tweet and
                    list counts, account age, location, link, protected, pinned).
 
@@ -71,7 +71,6 @@ def twibot_profile_fields(user: dict) -> dict:
         "username": user.get("username") or "",
         "has_avatar": bool(image),
         "avatar_default": "default_profile_images" in image,
-        "is_verified": bool(user.get("verified")),
     }
 
 
@@ -88,7 +87,7 @@ def profile_features(user: dict, reference: datetime) -> dict:
         age = max((reference - datetime.fromisoformat(created)).total_seconds() / 86400, 1.0)
     row = profile_text_features(
         fields["biography"], fields["display_name"], fields["username"],
-        fields["avatar_default"], fields["is_verified"],
+        fields["avatar_default"],
     )
     row.update({
         "followers_log1p": math.log1p(followers),
@@ -250,7 +249,7 @@ def train_set(name: str, cols: list[str], data: dict, out: Path) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", default="media/models/experiments/full-profile-v2")
+    parser.add_argument("--output", default="media/models/experiments/full-profile-v3")
     args = parser.parse_args()
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=False)

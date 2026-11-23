@@ -23,7 +23,7 @@ from engine.model import ModelService, metrics
 from engine.shard_index import file_hash
 from scripts.train_full_profile import CACHE, queue_metrics
 
-SOURCE = Path("media/models/experiments/full-profile-v2")
+SOURCE = Path("media/models/experiments/full-profile-v3")
 REQUIRED = ["followers_log1p", "bio_present", "username_length", "name_length"]
 
 
@@ -87,7 +87,7 @@ def main():
         "selection": target,
         "queue_fraction_val": target["predicted_positive"] / len(y),
         "queue": queue_metrics(y, scores),
-        "test_metrics_source": "media/models/experiments/full-profile-v2/report.json (sets.portable.test)",
+        "test_metrics_source": "media/models/experiments/full-profile-v3/report.json (sets.portable.test)",
         "independent_evaluation": False,
         "threads_quality_validated": False,
     })

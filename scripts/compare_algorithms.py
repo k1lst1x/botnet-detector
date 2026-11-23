@@ -29,7 +29,7 @@ from scripts.train_full_profile import (
     FEATURE_SETS, SEED, SHARD7_VAL, best_f1_threshold, build_table, evaluate,
 )
 
-XGB_REPORT = Path("media/models/experiments/full-profile-v2/report.json")
+XGB_REPORT = Path("media/models/experiments/full-profile-v3/report.json")
 SETS = ("portable", "twitter")
 
 
@@ -73,7 +73,7 @@ def fit_one(algo, params, factory, Xtr, ytr, Xva, yva):
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", default="media/models/experiments/algorithm-comparison-v1")
+    parser.add_argument("--output", default="media/models/experiments/algorithm-comparison-v2")
     args = parser.parse_args()
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=False)

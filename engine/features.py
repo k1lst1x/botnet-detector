@@ -52,6 +52,8 @@ URL_PATTERN = re.compile(r"https?://[^\s<>]+", re.IGNORECASE)
 
 # profile-v2: profile fields exposed by both Twitter and the Threads profile API.
 # followers_log1p, bio_present and avatar_present are shared with portable-v1.
+# Verification is deliberately excluded: in TwiBot-22 all verified accounts are in
+# train (and all human), val/test have none, and Threads verification can be bought.
 PROFILE_VERSION = "profile-v2"
 PROFILE_EXTRA_FEATURES = [
     "bio_length",
@@ -60,7 +62,6 @@ PROFILE_EXTRA_FEATURES = [
     "bio_hashtag_count",
     "bio_digit_ratio",
     "avatar_default",
-    "verified",
     "name_length",
     "name_digit_ratio",
     "name_non_alnum_ratio",
@@ -96,7 +97,7 @@ def name_username_overlap(name, username):
     return i / len(b)
 
 
-def profile_text_features(biography, name, username, avatar_default, verified):
+def profile_text_features(biography, name, username, avatar_default):
     """profile-v2 extras; None marks an unknown source field.
 
     The same function builds training rows (TwiBot-22) and inference rows.
@@ -111,8 +112,6 @@ def profile_text_features(biography, name, username, avatar_default, verified):
         f["bio_digit_ratio"] = _share(sum(c.isdigit() for c in bio), len(bio))
     if avatar_default is not None:
         f["avatar_default"] = float(avatar_default)
-    if verified is not None:
-        f["verified"] = float(verified)
     if name is not None:
         name = unicodedata.normalize("NFKC", name)
         f["name_length"] = float(len(name))
@@ -136,7 +135,6 @@ def extract_profile_features(account: AccountSnapshot):
         account.display_name,
         account.username,
         account.avatar_default,
-        account.is_verified,
     )
 
 

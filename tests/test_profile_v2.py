@@ -23,11 +23,11 @@ NOW = datetime(2026, 11, 1, tzinfo=timezone.utc)
 
 
 def test_profile_text_features_hand_computed():
-    f = profile_text_features("Hi @a #b 2 https://t.co/x", "Ann_1", "ann_99", False, True)
+    f = profile_text_features("Hi @a #b 2 https://t.co/x", "Ann_1", "ann_99", False)
     assert f["bio_length"] == 25
     assert (f["bio_url_count"], f["bio_mention_count"], f["bio_hashtag_count"]) == (1, 1, 1)
     assert f["bio_digit_ratio"] == pytest.approx(1 / 25)
-    assert (f["avatar_default"], f["verified"]) == (0.0, 1.0)
+    assert f["avatar_default"] == 0.0 and "verified" not in f
     assert f["name_length"] == 5 and f["name_digit_ratio"] == pytest.approx(0.2)
     assert f["name_non_alnum_ratio"] == pytest.approx(0.2)  # underscore
     assert (f["username_length"], f["username_trailing_digits"], f["username_underscore_count"]) == (6, 2, 1)
@@ -35,7 +35,7 @@ def test_profile_text_features_hand_computed():
 
 
 def test_unknown_fields_stay_missing_not_zero():
-    f = profile_text_features(None, None, "x", None, None)
+    f = profile_text_features(None, None, "x", None)
     assert f["username_length"] == 1
     assert all(f[n] is None for n in PROFILE_EXTRA_FEATURES if not n.startswith("username"))
     assert f["name_username_overlap"] is None
@@ -46,7 +46,7 @@ def test_overlap_without_latin_letters_is_zero():
 
 
 def test_v2_feature_order_is_stable():
-    assert len(PROFILE_V2_FEATURES) == 18 and len(set(PROFILE_V2_FEATURES)) == 18
+    assert len(PROFILE_V2_FEATURES) == 17 and len(set(PROFILE_V2_FEATURES)) == 17
     assert set(PROFILE_EXTRA_FEATURES) < set(PROFILE_V2_FEATURES)
 
 
