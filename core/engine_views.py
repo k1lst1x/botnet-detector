@@ -3,12 +3,12 @@ import uuid
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.db.models import F
+from django.db.models import Case, F, When
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from .engine_client import EngineClient, EngineClientError
-from .models import EngineAccount, EngineJob
+from .models import EngineAccount, EngineGroup, EngineJob
 
 
 def _remember(owner, result, kind):
@@ -85,6 +85,20 @@ def collect(request):
     return redirect("engine_jobs")
 
 
+def _save_groups(owner, job, summary):
+    """Replace the job's groups with the engine result; returns {group_id: EngineGroup}."""
+    saved = {}
+    with transaction.atomic():
+        EngineGroup.objects.filter(owner=owner, source_job=job).delete()
+        for g in summary.get("groups", []):
+            saved[g["group_id"]] = EngineGroup.objects.create(
+                owner=owner, source_job=job, group_id=g["group_id"], size=g["size"],
+                density=g["density"], mean_weight=g["mean_weight"], flagged=g["flagged"],
+                members=g["members"], shared_objects=g["shared_objects"],
+            )
+    return saved
+
+
 @login_required
 def detail(request, job_id):
     job = get_object_or_404(EngineJob, job_id=job_id, owner=request.user)
@@ -107,6 +121,7 @@ def refresh(request, job_id):
         job.save(update_fields=["status", "error"])
         if job.kind == "analysis" and job.status == "completed":
             result = client.get(f"/v1/analyses/{job.job_id}")
+            groups = _save_groups(request.user, job, result.get("groups") or {})
             for row in result["results"]:
                 identity = {
                     "owner": request.user,
@@ -134,6 +149,9 @@ def refresh(request, job_id):
                             "decision": row["decision"],
                             "model_version": row.get("model_version") or "",
                             "source_job": job,
+                            "queue": row.get("queue") or "",
+                            "group": groups.get((row.get("group") or {}).get("group_id")),
+                            "coordination_score": (row.get("group") or {}).get("coordination_score"),
                         },
                     )
             return render(
@@ -170,10 +188,31 @@ def analyze(request, job_id):
 
 @login_required
 def accounts(request):
+    queue_first = Case(When(queue="priority", then=0), default=1)
     return render(
         request,
         "core/engine_accounts.html",
-        {"accounts": EngineAccount.objects.filter(owner=request.user).order_by(F("score").desc(nulls_last=True), "pk")[:500]},
+        {"accounts": EngineAccount.objects.filter(owner=request.user)
+         .select_related("group").order_by(queue_first, F("score").desc(nulls_last=True), "pk")[:500]},
+    )
+
+
+@login_required
+def groups(request):
+    return render(
+        request,
+        "core/engine_groups.html",
+        {"groups": EngineGroup.objects.filter(owner=request.user).select_related("source_job")[:300]},
+    )
+
+
+@login_required
+def group_detail(request, pk):
+    group = get_object_or_404(EngineGroup.objects.select_related("source_job"), pk=pk, owner=request.user)
+    return render(
+        request,
+        "core/engine_group.html",
+        {"group": group, "accounts": group.accounts.order_by(F("score").desc(nulls_last=True), "pk")},
     )
 
 

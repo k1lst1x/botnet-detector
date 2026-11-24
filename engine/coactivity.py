@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import hashlib
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 from dataclasses import dataclass
 
 import networkx as nx
@@ -140,12 +140,43 @@ def knn_graph(sim: Similarity, k: int = 10, min_similarity: float = 0.2) -> nx.G
     return g
 
 
-def communities(g: nx.Graph, seed: int = 42, resolution: float = 1.0) -> list[set[str]]:
-    """Louvain communities of the non-isolated part of the graph, largest first."""
+def communities(g: nx.Graph, seed: int = 42, resolution: float = 1.0,
+                method: str = "louvain") -> list[set[str]]:
+    """Communities of the non-isolated part of the graph, largest first.
+
+    ``louvain`` (networkx), ``leiden`` (leidenalg, RB-configuration quality;
+    falls back to Louvain when leidenalg is not installed) or ``components``
+    (connected components of the k-NN graph).
+    """
     core = g.subgraph(n for n, d in g.degree() if d > 0)
-    found = nx.community.louvain_communities(core, weight="weight", seed=seed,
-                                             resolution=resolution)
+    if method == "components":
+        found = [set(c) for c in nx.connected_components(core)]
+    elif method == "leiden" and _leiden_available():
+        import igraph as ig
+        import leidenalg
+
+        nodes = list(core.nodes())
+        index = {n: i for i, n in enumerate(nodes)}
+        edges = [(index[a], index[b]) for a, b in core.edges()]
+        graph = ig.Graph(n=len(nodes), edges=edges)
+        graph.es["weight"] = [core[a][b]["weight"] for a, b in core.edges()]
+        part = leidenalg.find_partition(
+            graph, leidenalg.RBConfigurationVertexPartition, weights="weight",
+            resolution_parameter=resolution, seed=seed)
+        found = [{nodes[i] for i in members} for members in part]
+    else:
+        found = nx.community.louvain_communities(core, weight="weight", seed=seed,
+                                                 resolution=resolution)
     return sorted(found, key=len, reverse=True)
+
+
+def _leiden_available() -> bool:
+    try:
+        import igraph  # noqa: F401
+        import leidenalg  # noqa: F401
+    except ImportError:
+        return False
+    return True
 
 
 def community_scores(g: nx.Graph, groups: list[set[str]], min_size: int = 3) -> list[dict]:
@@ -167,3 +198,82 @@ def community_scores(g: nx.Graph, groups: list[set[str]], min_size: int = 3) -> 
             "score": float(np.mean(weights)) * (len(weights) / possible) if weights else 0.0,
         })
     return out
+
+
+# --- system entry point -------------------------------------------------------------
+
+_HASHTAG = re.compile(r"#(\w+)")
+GROUP_FLAG_MIN_SIZE = 5
+GROUP_FLAG_MIN_WEIGHT = 0.2
+
+
+def dataset_objects(data) -> dict[str, list[str]]:
+    """Object tokens of every account in a Dataset: targets, URLs, hashtags, texts."""
+    from urllib.parse import urlsplit
+
+    out: dict[str, list[str]] = {f"{a.platform}:{a.external_user_id}": [] for a in data.accounts}
+    for post in data.posts:
+        objs = out.setdefault(f"{post.platform}:{post.author_id}", [])
+        objs.extend(f"m:{t.casefold()}" for t in post.targets or ())
+        urls = post.urls if post.urls is not None else _URL.findall(post.text or "")
+        for url in urls:
+            try:
+                parts = urlsplit(url)
+            except ValueError:
+                continue
+            if parts.netloc:
+                objs.append(f"u:{parts.netloc.lower()}{parts.path.rstrip('/')}")
+        text = post.text or ""
+        objs.extend(f"h:{h.casefold()}" for h in _HASHTAG.findall(text))
+        if not post.is_repost:
+            key = text_key(text)
+            if key:
+                objs.append(f"txt:{key}")
+    return out
+
+
+def group_summary(data, k: int = 10,
+                  min_similarity: float = 0.2, method: str = "louvain",
+                  resolution: float = 0.5) -> dict:
+    """Coordinated groups of a Dataset for the review queue.
+
+    A group is flagged when it has >= GROUP_FLAG_MIN_SIZE members and a mean tie
+    strength >= GROUP_FLAG_MIN_WEIGHT. The flag raises review priority; it does not
+    change the account score (see docs/reports/2026-11-24-cresci-account-and-group.md).
+    Louvain with resolution 0.5 was selected on synthetic campaigns only
+    (scripts.cresci_partition_tuning).
+    """
+    objects = dataset_objects(data)
+    sim = similarity(objects, max_account_share=0.8)
+    coord = coordination_score(sim, k)
+    g = knn_graph(sim, k, min_similarity)
+    found = communities(g, resolution=resolution, method=method)
+    scored = community_scores(g, found, min_size=2)
+    groups, account_group = [], {}
+    for rank, c in enumerate(sorted(scored, key=lambda c: (-c["size"], -c["mean_weight"]))):
+        members = sorted(found[c["community"]])
+        shared = Counter(o for m in members for o in set(objects[m]))
+        group_id = f"g{rank + 1}"
+        groups.append({
+            "group_id": group_id,
+            "size": c["size"],
+            "density": round(c["density"], 4),
+            "mean_weight": round(c["mean_weight"], 4),
+            "flagged": c["size"] >= GROUP_FLAG_MIN_SIZE and c["mean_weight"] >= GROUP_FLAG_MIN_WEIGHT,
+            "members": members,
+            "shared_objects": [{"object": o, "accounts": n}
+                               for o, n in shared.most_common(8) if n >= 2],
+        })
+        for m in members:
+            account_group[m] = group_id
+    return {
+        "method": method if method != "leiden" or _leiden_available() else "louvain",
+        "k": k,
+        "min_similarity": min_similarity,
+        "objects_kept": sim.objects_kept,
+        "groups": groups,
+        "account_group": account_group,
+        "coordination_score": {a: round(float(s), 4) for a, s in zip(sim.accounts, coord)},
+        "flag_rule": {"min_size": GROUP_FLAG_MIN_SIZE, "min_mean_weight": GROUP_FLAG_MIN_WEIGHT},
+        "note": "coordination_is_not_bot_probability",
+    }

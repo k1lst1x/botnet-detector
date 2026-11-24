@@ -9,6 +9,15 @@ def review_decision(score, threshold):
     return "priority_review" if score >= threshold else "standard_review"
 
 
+def review_queue(decision, in_flagged_group):
+    """Account flag OR coordinated-group flag; averaging the two scores hurt recall."""
+    if decision == "priority_review" or in_flagged_group:
+        return "priority"
+    if decision == "standard_review":
+        return "standard"
+    return "not_scored"
+
+
 def analyze_dataset(data, model):
     grouped = defaultdict(list)
     for post in data.posts:
@@ -103,10 +112,25 @@ def analyze_dataset(data, model):
                 "observed_window": data.observation.model_dump(mode="json"),
             }
         )
+    from .coactivity import group_summary
     from .coordination import coordination_summary
 
+    groups = group_summary(data)
+    flagged = {g["group_id"]: g for g in groups["groups"] if g["flagged"]}
+    for row in results:
+        key = f"{row['platform']}:{row['external_user_id']}"
+        group_id = groups["account_group"].get(key)
+        row["group"] = None if group_id is None else {
+            "group_id": group_id,
+            "flagged": group_id in flagged,
+            "coordination_score": groups["coordination_score"].get(key),
+        }
+        row["queue"] = review_queue(row["decision"], group_id in flagged)
+        if group_id in flagged:
+            row["warnings"].append("coordinated_group")
     return {
         "results": results,
         "model": model.status(),
+        "groups": {k: v for k, v in groups.items() if k not in ("account_group", "coordination_score")},
         "coordination": coordination_summary(data),
     }

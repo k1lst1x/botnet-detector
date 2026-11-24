@@ -15,6 +15,7 @@
 {% elif row.decision == "priority_review" %}<p><strong>Приоритетная проверка</strong> · индекс подозрительности {{ row.score|floatformat:3 }}</p>
 {% elif row.decision == "standard_review" %}<p>Обычная очередь · индекс подозрительности {{ row.score|floatformat:3 }}. Это не подтверждение, что аккаунт принадлежит человеку.</p>
 {% else %}<p>Решение: {{ row.decision }} · оценка {{ row.score|floatformat:3 }}</p>{% endif %}
+{% if row.group and row.group.flagged %}<p><strong>Входит в скоординированную группу {{ row.group.group_id }}</strong> — аккаунт поднят в приоритетную очередь. Подробности на странице <a href="{% url 'engine_groups' %}">Группы</a>.</p>{% endif %}
 <p>Публикаций: {{ row.coverage.posts }}. Полная история: {{ row.coverage.complete|yesno:"да,нет" }}.</p>
 <details><summary>Признаки</summary><table class="tbl">{% for name,value in row.features.items %}<tr><td>{{ name }}</td><td>{{ value|default_if_none:"нет данных" }}</td></tr>{% endfor %}</table></details>
 {% if row.explanation %}<details><summary>Причины оценки</summary><table class="tbl">{% for item in row.explanation %}<tr><td>{{ item.feature }}</td><td>{{ item.contribution_log_odds|floatformat:3 }}</td></tr>{% endfor %}</table></details>{% endif %}

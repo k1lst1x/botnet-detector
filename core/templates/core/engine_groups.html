@@ -1,0 +1,20 @@
+{% extends "core/base.html" %}
+{% block title %}Группы{% endblock %}
+{% block content %}
+<section class="head"><div><p class="eyebrow">уровень групп · граф совместной активности</p><h1>Группы</h1></div><a href="{% url 'engine_accounts' %}" class="btn ghost">Аккаунты</a></section>
+<p class="muted">Группа — аккаунты, которые действуют вокруг одних и тех же редких объектов: адресатов, ссылок, хэштегов, одинаковых текстов. Отмеченная группа (от 5 участников, средняя сила связи от 0,2) поднимает своих участников в приоритетную очередь. Координация — повод для проверки, а не доказательство автоматизации: поклонники одного события тоже действуют похоже.</p>
+{% if groups %}
+<table class="tbl card">
+<tr><th>Группа</th><th>Анализ</th><th>Участников</th><th>Сила связи</th><th>Плотность</th><th>Общие объекты</th><th></th></tr>
+{% for g in groups %}<tr>
+<td><a href="{% url 'engine_group' g.pk %}">{{ g.group_id }}</a></td>
+<td class="mono small">{{ g.source_job.job_id|truncatechars:13 }} · {{ g.created_at|date:"d.m.Y H:i" }}</td>
+<td>{{ g.size }}</td>
+<td class="mono">{{ g.mean_weight|floatformat:2 }}</td>
+<td class="mono">{{ g.density|floatformat:2 }}</td>
+<td class="small">{% load groups %}{% for o in g.shared_objects|slice:":3" %}{{ o.object|object_kind }} {{ o.object|object_value|truncatechars:40 }} ({{ o.accounts }}){% if not forloop.last %}; {% endif %}{% empty %}—{% endfor %}</td>
+<td>{% if g.flagged %}<span class="tag bot">отмечена</span>{% else %}<span class="tag">слабая связь</span>{% endif %}</td>
+</tr>{% endfor %}
+</table>
+{% else %}<section class="card">Групп пока нет. Они появятся после проверки аккаунтов: запустите анализ и обновите состояние задания.</section>{% endif %}
+{% endblock %}
