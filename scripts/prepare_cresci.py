@@ -15,7 +15,6 @@ import json
 import re
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
@@ -135,6 +134,19 @@ def load_users(group: str) -> pd.DataFrame:
     for col in ("default_profile", "default_profile_image", "protected", "verified"):
         users[col] = users[col].map({"1": 1.0, "True": 1.0, "true": 1.0}).fillna(0.0)
     return users
+
+
+def frame(table) -> pd.DataFrame:
+    """Arrow table -> pandas with missing strings as None.
+
+    pandas 3 reads them as NaN, which is truthy and ``is not None``: a plain to_pandas()
+    silently marks every tweet as a reply and a retweet.
+    """
+    df = table.to_pandas()
+    for name in table.schema.names:
+        if pa.types.is_string(table.schema.field(name).type):
+            df[name] = df[name].astype(object).where(df[name].notna(), None)
+    return df
 
 
 def main() -> None:

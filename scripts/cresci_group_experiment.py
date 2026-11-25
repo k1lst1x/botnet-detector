@@ -35,9 +35,9 @@ from engine.coactivity import (OBJECT_KINDS, community_scores, communities,
                                coordination_score, knn_graph, post_objects, similarity)
 from engine.features import PORTABLE_FEATURES, PROFILE_V2_FEATURES
 from scripts.cresci_account_experiment import PARAMS
-from scripts.prepare_cresci import OUT
+from scripts.prepare_cresci import OUT, frame
 
-REPORT = Path("media/models/experiments/cresci-group-v1")
+REPORT = Path("media/models/experiments/cresci-group-v2")
 WINDOW = ("2014-06-01", "2014-11-01")
 GROUPS = ["genuine", "social_1", "social_2", "social_3"]
 MIN_POSTS = 10
@@ -49,8 +49,8 @@ SEED = 42
 def load() -> tuple[pd.DataFrame, dict[str, list[str]]]:
     cols = ["user_id", "group", "created_at", "text", "reply_to_status",
             "retweet_of_status", "retweet_of_user", "mentions", "hashtags"]
-    t = pq.read_table(OUT / "tweets.parquet", columns=cols,
-                      filters=[("group", "in", GROUPS)]).to_pandas()
+    t = frame(pq.read_table(OUT / "tweets.parquet", columns=cols,
+                            filters=[("group", "in", GROUPS)]))
     t = t[(t.created_at >= WINDOW[0]) & (t.created_at < WINDOW[1])]
     n = t.groupby("user_id").size()
     t = t[t.user_id.isin(n[n >= MIN_POSTS].index)]
@@ -118,7 +118,7 @@ def community_eval(sim, groups_of: pd.Series, flag_thresholds=(0.1, 0.2, 0.3, 0.
 
 
 def loco_combined(sim, coord: np.ndarray, groups_of: pd.Series) -> dict:
-    feats = pd.read_parquet(OUT / "account_features.parquet").set_index("user_id")
+    feats = pd.read_parquet(OUT / "account_features_v2.parquet").set_index("user_id")
     cols = PROFILE_V2_FEATURES + PORTABLE_FEATURES
     ids = np.array(sim.accounts)
     f = feats.loc[ids]

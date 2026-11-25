@@ -25,7 +25,7 @@ from engine.shard_index import file_hash
 from scripts.cresci_account_experiment import MIN_POSTS, PARAMS, SEED, scores
 from scripts.prepare_cresci import OUT
 
-OUTPUT = Path("media/models/cresci-account-v1")
+OUTPUT = Path("media/models/cresci-account-v2")
 FEATURES = PROFILE_V2_FEATURES + PORTABLE_FEATURES
 THRESHOLD = 0.5
 
@@ -38,7 +38,7 @@ def fit(x, y):
 def main():
     if OUTPUT.exists():
         raise SystemExit(f"{OUTPUT} already exists")
-    source = OUT / "account_features.parquet"
+    source = OUT / "account_features_v2.parquet"
     t = pd.read_parquet(source)
     t = t[t.observed_posts >= MIN_POSTS].reset_index(drop=True)
     x, y, group = t[FEATURES].to_numpy(dtype=float), t["label"].to_numpy(), t["group"].to_numpy()
@@ -59,7 +59,7 @@ def main():
         "features": FEATURES,
         "feature_version": PROFILE_VERSION,
         "feature_set": "portable",
-        "model_version": "cresci-account-v1",
+        "model_version": "cresci-account-v2",
         "threshold": THRESHOLD,
         "required_observed_features": PORTABLE_FEATURES,
         "minimum_observed_ratio": 0.75,

@@ -1,7 +1,8 @@
 import numpy as np
+import pytest
 
 from engine.coactivity import (community_scores, communities, coordination_score, knn_graph,
-                               post_objects, similarity, text_key)
+                               post_objects, similarity, system_post_objects, text_key)
 
 
 def test_text_key_ignores_links_mentions_digits_case():
@@ -43,3 +44,36 @@ def test_background_objects_are_dropped():
     world = {f"a{i}": ["h:everyone", f"h:own{i}"] for i in range(10)}
     sim = similarity(world, max_account_share=0.5)
     assert sim.objects_kept == 0 and sim.matrix.nnz == 0
+
+
+def test_max_channels_finds_one_shared_kind_hidden_by_other_activity():
+    world = {f"a{i}": [f"txt:same{j}" for j in range(3)] + [f"h:own{i % 2}_{j}" for j in range(40)]
+             for i in range(4)}
+    world |= {f"x{i}": [f"h:bg{i}", "h:bgshared"] for i in range(20)}
+    joint = similarity(world, max_account_share=0.9)
+    best = similarity(world, max_account_share=0.9, channels="max")
+    i, j = joint.accounts.index("a0"), joint.accounts.index("a1")
+    assert joint.matrix[i, j] < 0.2 and best.matrix[i, j] > 0.99
+
+
+def test_min_shared_drops_pairs_with_one_common_object():
+    world = {"a": ["h:x"], "b": ["h:x"], "c": ["h:y", "h:z"], "d": ["h:y", "h:z"], "e": ["h:q"]}
+    sim = similarity(world)
+    assert knn_graph(sim, min_shared=1).has_edge("a", "b")
+    g = knn_graph(sim, min_shared=2)
+    assert not g.has_edge("a", "b") and g.has_edge("c", "d")
+
+
+def test_truncated_links_are_not_objects():
+    assert system_post_objects("x", urls=["http://t.co…", "http://shop.example/p/"]) == ["u:shop.example/p"]
+
+
+def test_missing_strings_from_parquet_become_none(tmp_path):
+    pytest.importorskip("pandas")
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+
+    from scripts.prepare_cresci import frame
+
+    pq.write_table(pa.table({"reply": pa.array(["1", None]), "n": [1, 2]}), tmp_path / "t.parquet")
+    assert frame(pq.read_table(tmp_path / "t.parquet"))["reply"].tolist() == ["1", None]

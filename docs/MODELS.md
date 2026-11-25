@@ -11,10 +11,13 @@
 | Папка | Что это | SHA256 `model.joblib` |
 |---|---|---|
 | `review-profile-v2/` | профильная модель, TwiBot-22, 700 тыс. профилей; для очереди проверки | `0407ee4cb98c37db81a96a7bbf6d4fdd2fa83fb0a241b35c4a634ccf25ab2a0f` |
-| `cresci-account-v1/` | профиль + поведение, Cresci-2017, 8 541 аккаунт с ≥20 твитами; исследовательская, на Threads не проверена | `3085d7dcf4cdcfe428771963227a5b01812a5e3997f3d4b37a541012361f281c` |
+| `cresci-account-v2/` | профиль + поведение, Cresci-2017, 8 541 аккаунт с ≥20 твитами; исследовательская, на Threads не проверена | `df40a24df59387bbdf5c0a97626f38a500cba0d59af3f4430a95e157d3d63950` |
 
-В каждой папке рядом лежит `report.json` с метриками. `cresci-account-v1` требует полной истории
+В каждой папке рядом лежит `report.json` с метриками. `cresci-account-v2` требует полной истории
 и от 20 публикаций, иначе система вернёт `insufficient_data`.
+
+`cresci-account-v1` отозвана: обучена на ошибочных признаках (у всех аккаунтов доля ответов и репостов = 100 %).
+Не использовать; файл с SHA256 `3085d7dc…281c` удалить.
 
 ## Скачать и подключить
 
@@ -40,4 +43,4 @@ API и worker читают `ENGINE_MODEL_PATH`; в Compose это `/app/media/mo
 2. Загрузить `model.joblib` и `report.json` в одноимённую папку на Drive. Старые версии не удалять и не заменять.
 3. Добавить строку с SHA256 в таблицу этого файла и провести изменение через pull request.
 
-Сборка: `scripts.build_profile_v2_model` (review-profile-v2), `scripts.build_cresci_model` (cresci-account-v1).
+Сборка: `scripts.build_profile_v2_model` (review-profile-v2), `scripts.build_cresci_model` (cresci-account-v2).

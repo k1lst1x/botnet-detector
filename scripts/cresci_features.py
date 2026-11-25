@@ -4,7 +4,7 @@ Each account gets its last N tweets as a complete observation window
 [first of the N, last of the N]. Profile fields follow AccountSnapshot.
 Targets are @-mentions plus the replied-to user, as the engine expects.
 
-Output: data/processed/cresci2017-v1/account_features.parquet
+Output: data/processed/cresci2017-v1/account_features_v2.parquet
 
 Run:  .venv/bin/python -m scripts.cresci_features [--last 200]
 """
@@ -13,20 +13,19 @@ from __future__ import annotations
 import argparse
 import time
 
-import numpy as np
 import pandas as pd
 import pyarrow.parquet as pq
 
 from engine.contracts import AccountSnapshot, Observation, Post
 from engine.features import BASE_FEATURES, extract_features, extract_profile_features
-from scripts.prepare_cresci import OUT
+from scripts.prepare_cresci import OUT, frame
 
 TWEET_COLS = ["tweet_id", "user_id", "created_at", "text", "reply_to_status",
               "reply_to_user", "retweet_of_status", "retweet_of_user", "mentions", "urls"]
 
 
 def last_tweets(n: int) -> pd.DataFrame:
-    t = pq.read_table(OUT / "tweets.parquet", columns=TWEET_COLS).to_pandas()
+    t = frame(pq.read_table(OUT / "tweets.parquet", columns=TWEET_COLS))
     t = t.drop_duplicates("tweet_id")
     t = t.sort_values(["user_id", "created_at"])
     return t.groupby("user_id", sort=False).tail(n)
@@ -92,7 +91,7 @@ def main() -> None:
     table = pd.DataFrame(rows)
     num = [c for c in table.columns if c not in {"user_id", "group"}]
     table[num] = table[num].astype(float)
-    table.to_parquet(OUT / "account_features.parquet", index=False)
+    table.to_parquet(OUT / "account_features_v2.parquet", index=False)
     print(table.groupby("group")[["label", "observed_posts"]].agg(["count", "mean"]))
     print(f"done in {time.time() - t0:.0f}s")
 

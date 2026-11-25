@@ -26,7 +26,7 @@ from sklearn.model_selection import StratifiedKFold, train_test_split
 from engine.features import PORTABLE_FEATURES, PROFILE_V2_FEATURES
 from scripts.prepare_cresci import OUT
 
-REPORT = Path("media/models/experiments/cresci-account-v1")
+REPORT = Path("media/models/experiments/cresci-account-v2")
 PROFILE_MODEL = Path("media/models/review-profile-v2/model.joblib")
 MIN_POSTS = 20
 SEED = 42
@@ -81,7 +81,7 @@ def twibot_transfer(t: pd.DataFrame) -> dict:
 
 def main() -> None:
     REPORT.mkdir(parents=True, exist_ok=True)
-    table = pd.read_parquet(OUT / "account_features.parquet")
+    table = pd.read_parquet(OUT / "account_features_v2.parquet")
     t = table[table.observed_posts >= MIN_POSTS].reset_index(drop=True)
     report = {
         "population": {"min_posts": MIN_POSTS, "by_group": t.group.value_counts().to_dict()},

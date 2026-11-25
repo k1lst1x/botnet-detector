@@ -21,13 +21,13 @@ def _campaign_dataset():
             posts.append(Post(platform="threads", external_post_id=f"{uid}-{j}", author_id=uid,
                               created_at=T0 + timedelta(minutes=i * 7 + j),
                               text=f"my own thoughts number {i} about topic #t{i}_{j}", targets=[f"friend{i}"]))
-    for i in range(6):
+    for i in range(9):
         uid = f"b{i}"
         accounts.append(AccountSnapshot(platform="threads", external_user_id=uid, username=uid))
         for j in range(5):
             posts.append(Post(platform="threads", external_post_id=f"{uid}-{j}", author_id=uid,
                               created_at=T0 + timedelta(minutes=j), targets=["brand"],
-                              text=f"Best deal ever, buy now {j}! https://shop.example/promo #sale"))
+                              text=f"Best deal ever, buy now {j}! https://shop.example/promo #sale #best"))
     return Dataset(accounts=accounts, posts=posts,
                    observation=Observation(start=T0, end=T0 + timedelta(hours=5), source="manual"))
 
@@ -37,7 +37,7 @@ def test_group_summary_flags_campaign_with_explanation():
     flagged = [g for g in summary["groups"] if g["flagged"]]
     assert len(flagged) == 1
     group = flagged[0]
-    assert set(group["members"]) == {f"threads:b{i}" for i in range(6)}
+    assert set(group["members"]) == {f"threads:b{i}" for i in range(9)}
     kinds = {o["object"].split(":")[0] for o in group["shared_objects"]}
     assert {"m", "u", "h", "txt"} <= kinds
 

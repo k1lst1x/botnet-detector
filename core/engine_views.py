@@ -104,7 +104,7 @@ def _save_groups(owner, job, summary):
             saved[g["group_id"]], _ = EngineGroup.objects.update_or_create(
                 owner=owner, source_job=job, group_id=g["group_id"],
                 defaults={k: g[k] for k in ("size", "density", "mean_weight", "flagged",
-                                            "members", "shared_objects")},
+                                            "members", "shared_objects")} | {"cohesion": g.get("cohesion")},
             )
         EngineGroup.objects.filter(owner=owner, source_job=job).exclude(group_id__in=saved).delete()
     return saved

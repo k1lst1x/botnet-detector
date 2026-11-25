@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import json
 import time
-from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -28,7 +27,7 @@ from scripts.cresci_account_experiment import PARAMS
 from scripts.cresci_group_experiment import K, MIN_SIM, SEED, inject, load, objects_for
 from scripts.prepare_cresci import OUT
 
-REPORT = Path("media/models/experiments/cresci-partition-v1")
+REPORT = Path("media/models/experiments/cresci-partition-v2")
 METHODS = (
     [("louvain", r) for r in (0.1, 0.3, 0.5, 1.0)]
     + [("leiden", r) for r in (0.01, 0.05, 0.1, 0.3, 1.0)]
@@ -105,7 +104,7 @@ def cresci_eval(sim, groups_of, method, res) -> dict:
 
 
 def combination(sim, groups_of, method, res, genuine_objects) -> dict:
-    feats = pd.read_parquet(OUT / "account_features.parquet").set_index("user_id")
+    feats = pd.read_parquet(OUT / "account_features_v2.parquet").set_index("user_id")
     others = feats[(feats.observed_posts >= 20) & (feats.group != "genuine")]
     ids = np.array(sim.accounts)
     grp = groups_of.loc[ids].to_numpy()

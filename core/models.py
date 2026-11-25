@@ -72,6 +72,7 @@ class EngineGroup(models.Model):
     size = models.PositiveIntegerField()
     density = models.FloatField()
     mean_weight = models.FloatField()
+    cohesion = models.FloatField(null=True, blank=True)
     flagged = models.BooleanField(default=False)
     members = models.JSONField(default=list)
     shared_objects = models.JSONField(default=list)
