@@ -14,13 +14,13 @@
   <nav>
     <a href="{% url 'engine_jobs' %}">Анализ Threads</a>
     <a href="{% url 'engine_accounts' %}">CRM</a>
+    <a href="{% url 'engine_groups' %}">Группы</a>
   </nav>
 </header>
 <main>
   {% for m in messages %}<div class="flash {{ m.tags }}">{{ m }}</div>{% endfor %}
   {% block content %}{% endblock %}
 </main>
-<footer class="foot mono">Синхронность — индикатор для проверки, а не доказательство автоматизации.</footer>
 {% block scripts %}{% endblock %}
 </body>
 </html>

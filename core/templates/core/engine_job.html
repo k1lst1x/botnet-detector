@@ -1,22 +1,21 @@
 {% extends "core/base.html" %}
-{% block title %}Задание{% endblock %}
+{% block title %}{{ job.kind_label }}{% endblock %}
 {% block content %}
-<section class="head"><div><p class="eyebrow">{{ job.kind }}</p><h1>Задание {{ job.job_id }}</h1><p>Состояние: {{ job.status }}</p></div><a href="{% url 'engine_jobs' %}">Все задания</a></section>
-{% if job.error %}<div class="flash">Задание не выполнено: {{ job.error }}. Проверьте данные и настройки подключения.</div>{% endif %}
-<form method="post" action="{% url 'engine_refresh' job.job_id %}">{% csrf_token %}<button class="btn ghost">Обновить состояние</button></form>
-{% if job.status == 'completed' and job.kind != 'analysis' %}
-<section class="card"><h2>Данные подготовлены</h2><form method="post" action="{% url 'engine_analyze' job.job_id %}">{% csrf_token %}<input type="hidden" name="idempotency_key" value="{{ submission_key }}"><button class="btn">Проверить аккаунты</button></form></section>
+<section class="head"><div><p class="eyebrow">{{ job.kind_label }}</p><h1>{{ job.title|default:job.kind_label }}</h1>
+<p class="jobline"><span class="tag {{ job.status }}">{{ job.status_label }}</span> <span class="muted">{{ job.created_at|date:"d.m.Y H:i" }}</span></p></div><a href="{% url 'engine_jobs' %}" class="btn ghost">Все задания</a></section>
+{% if unavailable %}<div class="flash error">{{ unavailable }} <a href="{% url 'engine_job' job.job_id %}">Попробовать снова</a></div>{% endif %}
+{% if job.is_active %}<section class="card" data-poll="{% url 'engine_status' job.job_id %}"><h2>{{ job.status_label }}…</h2><p class="muted">Страница обновится сама, когда задание завершится.</p></section>{% endif %}
+{% if job.status == 'failed' %}<section class="card"><h2>Задание не выполнено</h2><p>{{ job.error_label|default:"Причина неизвестна." }}</p><a href="{% url 'engine_jobs' %}" class="btn">Новый анализ</a></section>{% endif %}
+{% if job.status == 'completed' and job.kind != 'analysis' %}<section class="card"><h2>Данные подготовлены</h2>
+<div class="inline"><form method="post" action="{% url 'engine_analyze' job.job_id %}">{% csrf_token %}<input type="hidden" name="idempotency_key" value="{{ submission_key }}"><button class="btn{% if analyses %} ghost{% endif %}">{% if analyses %}Проверить ещё раз{% else %}Проверить аккаунты{% endif %}</button></form>
+{% for a in analyses %}<a class="btn{% if not forloop.first %} ghost{% endif %}" href="{% url 'engine_job' a.job_id %}">Результат от {{ a.created_at|date:"d.m.Y H:i" }}</a>{% endfor %}</div></section>{% endif %}
+{% if rows is not None %}
+<div class="stats"><div class="stat"><span class="k">Проверено аккаунтов</span><span class="v">{{ total }}</span></div>
+<div class="stat"><span class="k">Проверить в первую очередь</span><span class="v">{{ priority }}</span></div>
+<div class="stat"><span class="k">Отмеченных групп</span><span class="v">{{ flagged_groups }}</span></div></div>
+<p class="inline actions"><a class="btn" href="{% url 'engine_accounts' %}">Разметить в CRM</a>{% if flagged_groups %}<a class="btn ghost" href="{% url 'engine_groups' %}">Группы</a>{% endif %}{% if job.source %}<a class="btn ghost" href="{% url 'engine_job' job.source.job_id %}">Исходные данные</a>{% endif %}</p>
+{% for row in rows %}<section class="card">{% include "core/_account.html" with card=row.card group=row.group %}</section>{% endfor %}
+{% if total > rows|length %}<p class="muted">Показаны первые {{ rows|length }} из {{ total }}.</p>{% endif %}
 {% endif %}
-{% if result %}<section class="card"><h2>Результаты</h2><p class="muted">Оценки и ручная разметка доступны в <a href="{% url 'engine_accounts' %}">CRM</a>. Индекс не является вероятностью бота. Итоговую метку ставит пользователь. Качество переноса на Threads ещё не проверено.</p>
-{% for row in result.results %}<article><h3>{{ row.platform }} · {{ row.username|default:row.external_user_id }}</h3>
-{% if row.decision == 'model_not_ready' %}<p>Модель ещё не обучена. Признаки подготовлены.</p>
-{% elif row.decision == 'insufficient_data' %}<p>Недостаточно данных для оценки.</p>
-{% elif row.decision == 'model_incompatible' %}<p>Файл модели несовместим с текущими признаками.</p>
-{% elif row.decision == "priority_review" %}<p><strong>Приоритетная проверка</strong> · индекс подозрительности {{ row.score|floatformat:3 }}</p>
-{% elif row.decision == "standard_review" %}<p>Обычная очередь · индекс подозрительности {{ row.score|floatformat:3 }}. Это не подтверждение, что аккаунт принадлежит человеку.</p>
-{% else %}<p>Решение: {{ row.decision }} · оценка {{ row.score|floatformat:3 }}</p>{% endif %}
-<p>Публикаций: {{ row.coverage.posts }}. Полная история: {{ row.coverage.complete|yesno:"да,нет" }}.</p>
-<details><summary>Признаки</summary><table class="tbl">{% for name,value in row.features.items %}<tr><td>{{ name }}</td><td>{{ value|default_if_none:"нет данных" }}</td></tr>{% endfor %}</table></details>
-{% if row.explanation %}<details><summary>Причины оценки</summary><table class="tbl">{% for item in row.explanation %}<tr><td>{{ item.feature }}</td><td>{{ item.contribution_log_odds|floatformat:3 }}</td></tr>{% endfor %}</table></details>{% endif %}
-</article>{% endfor %}</section>{% endif %}
 {% endblock %}
+{% block scripts %}{% include "core/_poll.html" %}{% endblock %}

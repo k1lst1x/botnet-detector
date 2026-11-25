@@ -31,6 +31,12 @@ Django CRM ──► FastAPI (внутренний) ──► Celery + Redis ─
   [graph-v6](docs/reports/2026-11-20-graph-v6.md).
 - Threads API без доступа: работает импорт CSV/JSONL/JSON.
 
+## Модели
+
+Файлы моделей не входят в Git. Скачивать их нужно из папки
+[Google Drive](https://drive.google.com/drive/folders/1JLmfTDU9aPYOnZ49P_aW9yg1Tjy9DILI), обновления загружать туда же.
+Установка, контрольные суммы и порядок обновления: [docs/MODELS.md](docs/MODELS.md).
+
 ## Запуск
 
 ```bash
@@ -38,6 +44,7 @@ python3.12 -m venv .venv
 .venv/bin/pip install -r requirements-dev.txt
 .venv/bin/python -m pytest -q
 cp -n .env.example .env   # заполнить секреты
+# скачать модель с Google Drive и подключить: docs/MODELS.md
 docker compose up --build -d
 docker compose exec web python manage.py createsuperuser
 ```

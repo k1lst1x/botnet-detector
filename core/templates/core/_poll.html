@@ -1,0 +1,17 @@
+<script>
+(() => {
+  const rows = [...document.querySelectorAll("[data-poll]")];
+  if (!rows.length) return;
+  const tick = async () => {
+    for (const row of rows) {
+      try {
+        const r = await fetch(row.dataset.poll, {headers: {Accept: "application/json"}});
+        const {status} = await r.json();
+        if (status === "completed" || status === "failed") return location.reload();
+      } catch (e) { /* keep waiting */ }
+    }
+    setTimeout(tick, 1500);
+  };
+  setTimeout(tick, 800);
+})();
+</script>

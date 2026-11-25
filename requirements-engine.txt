@@ -12,3 +12,5 @@ scikit-learn>=1.5,<2
 joblib>=1.4,<2
 xgboost-cpu>=2.1,<4; platform_system == 'Linux'
 xgboost>=2.1,<4; platform_system != 'Linux'
+networkx>=3.3,<4
+scipy>=1.11,<2

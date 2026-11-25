@@ -136,9 +136,80 @@ def test_refreshing_old_analysis_cannot_roll_back_latest_crm_decision(client):
         side_effect=[{"status": "completed"}, old_result],
     ):
         response = client.post("/engine/jobs/old/refresh/")
-    assert response.status_code == 200
+    assert response.status_code == 302
     record.refresh_from_db()
     assert record.score == 0.9
     assert record.source_job_id == new.pk
     assert record.label == "human"
     assert record.notes == "reviewed"
+
+
+ROW = {
+    "platform": "threads", "external_user_id": "a", "username": "anna", "score": 0.5,
+    "decision": "priority_review", "model_version": "v", "queue": "priority", "threshold": 0.4,
+    "profile": {"display_name": "Анна", "biography": "Люблю горы", "followers": 1200, "following": 10},
+    "activity": {"first": "2026-11-01T00:00:00+00:00", "last": "2026-11-03T00:00:00+00:00",
+                 "recent": [{"created_at": "2026-11-03T00:00:00+00:00", "text": "Привет из Алматы"}]},
+    "coverage": {"posts": 7, "complete": True},
+    "features": {"url_ratio": 0.25, "url_ratio__missing": 0.0, "quote_ratio": None},
+    "explanation": [{"feature": "url_ratio", "contribution_log_odds": 0.3, "value": 0.25}],
+}
+
+
+@pytest.mark.django_db
+def test_job_page_syncs_itself_shows_result_and_keeps_group_links(client):
+    from core.models import EngineGroup
+
+    user = get_user_model().objects.create_user("analyst")
+    client.force_login(user)
+    EngineJob.objects.create(owner=user, job_id="j", kind="analysis", title="posts.csv", status="queued")
+    result = {"results": [ROW], "groups": {"groups": [{
+        "group_id": "g1", "size": 5, "density": 1.0, "mean_weight": 0.7, "flagged": True,
+        "members": ["threads:a"], "shared_objects": []}]}}
+    with patch("core.engine_views.EngineClient.get", side_effect=[{"status": "running"}]):
+        running = client.get("/engine/jobs/j/").content.decode()
+    assert "Выполняется" in running and "/engine/jobs/j/status/" in running
+    with patch("core.engine_views.EngineClient.get",
+               side_effect=[{"status": "completed"}, result, result]):
+        page = client.get("/engine/jobs/j/").content.decode()
+    group_pk = EngineGroup.objects.get(owner=user).pk
+    # A later visit shows the result again without another transfer into CRM.
+    with patch("core.engine_views.EngineClient.get", side_effect=[result]):
+        again = client.get("/engine/jobs/j/").content.decode()
+    with patch("core.engine_views.EngineClient.get", side_effect=[{"status": "completed"}, result]):
+        assert client.post("/engine/jobs/j/refresh/").status_code == 302
+    assert EngineGroup.objects.get(owner=user).pk == group_pk
+    for html in (page, again, client.get("/engine/accounts/").content.decode()):
+        assert "Анна" in html and "Люблю горы" in html and "1 200" in html
+        assert "Доля публикаций со ссылками" in html and "25 %" in html
+        assert "Привет из Алматы" in html and "url_ratio" not in html
+
+
+@pytest.mark.django_db
+def test_interrupted_transfer_is_repeated_on_next_visit(client):
+    from core.engine_client import EngineClientError
+
+    user = get_user_model().objects.create_user("analyst")
+    client.force_login(user)
+    job = EngineJob.objects.create(owner=user, job_id="j", kind="analysis")
+    with patch("core.engine_views.EngineClient.get",
+               side_effect=[{"status": "completed"}, EngineClientError("нет связи")]):
+        page = client.get("/engine/jobs/j/")
+    assert page.status_code == 200 and "нет связи" in page.content.decode()
+    job.refresh_from_db()
+    assert job.status == "queued" and not EngineAccount.objects.exists()
+    with patch("core.engine_views.EngineClient.get",
+               side_effect=[{"status": "completed"}, {"results": [ROW]}, {"results": [ROW]}]):
+        client.get("/engine/jobs/j/")
+    assert EngineAccount.objects.get().username == "anna"
+
+
+@pytest.mark.django_db
+def test_status_endpoint_is_owner_scoped(client):
+    user = get_user_model().objects.create_user("analyst")
+    EngineJob.objects.create(owner=user, job_id="j", kind="import")
+    client.force_login(user)
+    with patch("core.engine_views.EngineClient.get", side_effect=[{"status": "running"}]):
+        assert client.get("/engine/jobs/j/status/").json() == {"status": "running"}
+    client.force_login(get_user_model().objects.create_user("other"))
+    assert client.get("/engine/jobs/j/status/").status_code == 404

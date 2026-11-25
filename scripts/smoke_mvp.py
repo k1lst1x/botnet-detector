@@ -169,7 +169,9 @@ def main():
             f"/engine/jobs/{analysis}/refresh/",
             data={"csrfmiddlewaretoken": csrf(client)},
         )
-        assert response.status_code == 200 and "Модель ещё не обучена" in response.text
+        assert response.status_code == 302
+        response = client.get(f"/engine/jobs/{analysis}/")
+        assert response.status_code == 200 and "модель ещё не обучена" in response.text
         passed("real_analysis_features_and_missing_model_result")
         page = client.get("/engine/accounts/")
         assert author in page.text
