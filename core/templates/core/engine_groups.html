@@ -8,7 +8,7 @@
 <tr><th>Группа</th><th>Анализ</th><th>Участников</th><th>Сила связи</th><th>Плотность</th><th>Общие объекты</th><th></th></tr>
 {% for g in groups %}<tr>
 <td><a href="{% url 'engine_group' g.pk %}">{{ g.group_id }}</a></td>
-<td class="mono small">{{ g.source_job.job_id|truncatechars:13 }} · {{ g.created_at|date:"d.m.Y H:i" }}</td>
+<td class="mono small"><a href="{% url 'engine_job' g.source_job.job_id %}">{{ g.source_job.title|default:"проверка"|truncatechars:30 }}</a> · {{ g.created_at|date:"d.m.Y H:i" }}</td>
 <td>{{ g.size }}</td>
 <td class="mono">{{ g.mean_weight|floatformat:2 }}</td>
 <td class="mono">{{ g.density|floatformat:2 }}</td>
@@ -16,5 +16,5 @@
 <td>{% if g.flagged %}<span class="tag bot">отмечена</span>{% else %}<span class="tag">слабая связь</span>{% endif %}</td>
 </tr>{% endfor %}
 </table>
-{% else %}<section class="card">Групп пока нет. Они появятся после проверки аккаунтов: запустите анализ и обновите состояние задания.</section>{% endif %}
+{% else %}<section class="card">Групп пока нет. Они появятся после проверки аккаунтов: загрузите данные и нажмите «Проверить аккаунты».</section>{% endif %}
 {% endblock %}

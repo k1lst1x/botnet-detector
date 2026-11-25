@@ -1,0 +1,12 @@
+<div class="acc-head"><div><h2>{{ card.title }}</h2><p class="muted small">@{{ card.handle }} · {{ card.platform }}</p></div>
+<div class="tags">{% if card.queue %}<span class="tag {{ card.tone }}">{{ card.queue }}</span>{% endif %}{% if group %}<a class="tag{% if group.flagged %} bot{% endif %}" href="{% url 'engine_group' group.pk %}">группа {{ group.group_id }} · {{ group.size }} уч.{% if group.flagged %} · отмечена{% endif %}</a>{% endif %}</div></div>
+{% if card.bio %}<p class="bio">{{ card.bio }}</p>{% endif %}
+<p class="verdict">{{ card.decision }}</p>
+{% if group and group.flagged %}<p>Действует согласованно с другими аккаунтами: группа из {{ group.size }} участников.</p>{% endif %}
+{% if card.score_percent is not None %}<div class="meter"><div class="bar"><i class="{{ card.meter_tone }}" style="width:{{ card.score_percent }}%"></i>{% if card.threshold_percent is not None %}<b style="left:{{ card.threshold_percent }}%"></b>{% endif %}</div>
+<span class="small muted">Индекс подозрительности {{ card.score }} из 1{% if card.threshold %} · проверка в первую очередь от {{ card.threshold }}{% endif %}</span></div>{% endif %}
+{% if card.facts %}<div class="facts">{% for f in card.facts %}<div><span>{{ f.label }}</span>{{ f.value }}</div>{% endfor %}</div>{% endif %}
+{% if card.reasons %}<h3>Почему такая оценка</h3><ul class="why">{% for r in card.reasons %}<li><span class="{% if r.up %}up{% else %}down{% endif %}">{% if r.up %}↑ подозрительнее{% else %}↓ спокойнее{% endif %}</span> {{ r.label }}: <b>{{ r.value }}</b></li>{% endfor %}</ul>{% endif %}
+{% if card.incomplete %}<p class="small muted">История публикаций неполная, часть поведения могла не попасть в оценку.</p>{% endif %}
+{% if card.posts %}<details><summary>Последние публикации</summary><ul class="posts">{% for p in card.posts %}<li><span class="small muted">{{ p.created_at|slice:":10" }}</span><p>{{ p.text }}</p></li>{% endfor %}</ul></details>{% endif %}
+{% if card.features %}<details><summary>Все признаки</summary><table class="tbl compact">{% for f in card.features %}<tr><td>{{ f.label }}</td><td>{{ f.value }}</td></tr>{% endfor %}</table></details>{% endif %}

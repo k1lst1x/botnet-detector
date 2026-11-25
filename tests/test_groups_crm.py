@@ -82,7 +82,7 @@ def test_refresh_stores_groups_and_links_accounts(client):
                                "shared_objects": [{"object": "h:sale", "accounts": 6}]}]},
     }
     with patch("core.engine_views.EngineClient.get", side_effect=[{"status": "completed"}, result]):
-        assert client.post("/engine/jobs/j1/refresh/").status_code == 200
+        assert client.post("/engine/jobs/j1/refresh/").status_code == 302
     group = EngineGroup.objects.get(owner=user)
     account = EngineAccount.objects.get(owner=user, external_user_id="b0")
     assert account.group == group and account.queue == "priority"

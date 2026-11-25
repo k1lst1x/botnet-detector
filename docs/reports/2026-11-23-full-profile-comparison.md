@@ -85,3 +85,5 @@ Test в каждом запуске читается один раз, после
 ```
 
 Таблица признаков с SHA256 входных файлов: `data/processed/twibot22-profile-full-v2/`.
+
+Файл модели `review-profile-v2`: [Google Drive](https://drive.google.com/drive/folders/1JLmfTDU9aPYOnZ49P_aW9yg1Tjy9DILI), порядок — [MODELS.md](../MODELS.md).

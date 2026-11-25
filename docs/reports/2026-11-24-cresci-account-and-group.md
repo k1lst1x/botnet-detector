@@ -145,12 +145,20 @@ FPR — доля настоящих пользователей в приорит
 Цена — около 10 % настоящих пользователей в приоритетной очереди из-за естественных сообществ
 (общие хэштеги и адресаты). Снизить её можно порогом силы связи или ручным разбором групп целиком, а не по аккаунтам.
 
+## Модель
+
+Модель аккаунта (профиль + поведение) собирает `scripts.build_cresci_model`; файл скачивается из
+[Google Drive](https://drive.google.com/drive/folders/1JLmfTDU9aPYOnZ49P_aW9yg1Tjy9DILI) (`cresci-account-v1/`), см. [MODELS.md](../MODELS.md). В ней добавлено заполнение
+пропусков медианой (требование системы), поэтому метрики пересчитаны: CV ROC-AUC 0,996,
+recall 0,989, FPR 6,7 %; LOCO ROC-AUC 0,958 (traditional_1) – 0,983 (social_2).
+
 ## Повторение
 
 ```sh
 .venv/bin/python -m scripts.prepare_cresci            # parquet + manifest
 .venv/bin/python -m scripts.cresci_features           # признаки движка → account_features.parquet
 .venv/bin/python -m scripts.cresci_account_experiment # → media/models/experiments/cresci-account-v1
+.venv/bin/python -m scripts.build_cresci_model        # → media/models/cresci-account-v1
 .venv/bin/python -m scripts.cresci_group_experiment   # → media/models/experiments/cresci-group-v1
 .venv/bin/python -m scripts.cresci_partition_tuning   # → media/models/experiments/cresci-partition-v1
 ```

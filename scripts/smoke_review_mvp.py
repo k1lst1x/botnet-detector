@@ -171,7 +171,9 @@ def main():
             f"/engine/jobs/{analysis}/refresh/",
             data={"csrfmiddlewaretoken": csrf(client)},
         )
-        assert response.status_code == 200 and ("очередь" in response.text or "Приоритетная проверка" in response.text)
+        assert response.status_code == 302
+        response = client.get(f"/engine/jobs/{analysis}/")
+        assert response.status_code == 200 and ("обычная очередь" in response.text or "приоритетная проверка" in response.text)
         passed("real_model_score_explanation_and_review_queue")
         page = client.get("/engine/accounts/")
         assert author in page.text

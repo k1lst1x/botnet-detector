@@ -49,7 +49,8 @@ h3 { font-size: 13px; margin: 20px 0 8px; text-transform: uppercase; letter-spac
 .btn:hover { background: var(--accent); }
 .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
 .btn.danger { color: var(--accent); margin-top: 12px; }
-input, select { font: inherit; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+a.btn { text-decoration: none; display: inline-block; }
+input, select, textarea { font: inherit; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
 input[type=number] { width: 90px; }
 .inline { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .inline label { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
@@ -84,5 +85,25 @@ input[type=number] { width: 90px; }
 .info { position: absolute; left: 16px; bottom: 12px; font-size: 13px; background: var(--card); padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); }
 .pager { display: flex; gap: 14px; justify-content: center; padding-top: 14px; }
 .empty { text-align: center; padding: 48px; }
-.foot { text-align: center; color: var(--muted); padding: 32px; font-size: 12px; }
+.grid2.forms > .card { display: flex; flex-direction: column; }
+.grid2.forms form { flex: 1; align-items: stretch; } .grid2.forms .btn { margin-top: auto; align-self: flex-start; }
+.tag.completed { background: var(--ok-soft); border-color: transparent; color: var(--ok); }
+.tag.failed { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+.tag.running, .tag.queued { background: var(--mid-soft); border-color: transparent; color: var(--mid); }
+.jobline { margin: 10px 0 0; } .actions { margin: 0 0 20px; }
+.card.acc { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 28px; scroll-margin-top: 80px; }
+.card.acc form { align-items: stretch; border-left: 1px solid var(--line); padding-left: 24px; } .card.acc .btn { text-align: center; }
+textarea { resize: vertical; }
+.acc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.acc-head h2 { margin: 0; font-size: 18px; overflow-wrap: anywhere; } .acc-head p { margin: 2px 0 0; overflow-wrap: anywhere; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; } .tags .tag { text-decoration: none; white-space: nowrap; }
+.bio { margin: 10px 0 0; color: var(--muted); } .verdict { font-weight: 600; margin: 14px 0 6px; }
+.meter { margin: 10px 0 14px; } .meter .bar { position: relative; overflow: visible; margin-bottom: 6px; background: var(--line); }
+.meter .bar i.human { background: var(--ok); } .meter .bar b { position: absolute; top: -4px; width: 2px; height: 14px; background: var(--ink); }
+.facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin: 12px 0; }
+.facts div { background: var(--bg); border-radius: 8px; padding: 8px 10px; font-weight: 500; } .facts span { display: block; font-weight: 400; color: var(--muted); font-size: 11px; }
+.why { list-style: none; padding: 0; margin: 0 0 12px; } .why li { padding: 4px 0; }
+.why span { display: inline-block; width: 130px; font-size: 13px; } .why .up { color: var(--accent); } .why .down { color: var(--ok); }
+details { margin-top: 8px; } summary { cursor: pointer; }
+@media (max-width: 860px) { .card.acc { grid-template-columns: minmax(0, 1fr); } .card.acc form { border-left: 0; border-top: 1px solid var(--line); padding: 18px 0 0; } .acc-head { flex-direction: column; } .tags { justify-content: flex-start; } }
 @media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } main { padding: 18px; } .top { padding: 14px 18px; flex-direction: column; gap: 10px; } .explain li { grid-template-columns: 1fr; } }

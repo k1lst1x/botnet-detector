@@ -5,6 +5,30 @@ from collections import defaultdict
 from .features import FEATURE_VERSION, extract_features, extract_profile_features
 
 
+RECENT_POSTS = 3
+RECENT_TEXT_CHARS = 280
+
+
+def account_context(account, posts):
+    """Human-readable profile and activity shown next to the score; not model input."""
+    ordered = sorted(posts, key=lambda p: p.created_at)
+    return {
+        "profile": {
+            "display_name": account.display_name,
+            "biography": account.biography,
+            "followers": account.followers,
+            "following": account.following,
+            "is_verified": account.is_verified,
+        },
+        "activity": {
+            "first": ordered[0].created_at.isoformat() if ordered else None,
+            "last": ordered[-1].created_at.isoformat() if ordered else None,
+            "recent": [{"created_at": p.created_at.isoformat(), "text": p.text[:RECENT_TEXT_CHARS]}
+                       for p in reversed(ordered) if p.text][:RECENT_POSTS],
+        },
+    }
+
+
 def review_decision(score, threshold):
     return "priority_review" if score >= threshold else "standard_review"
 
@@ -102,6 +126,8 @@ def analyze_dataset(data, model):
                 "external_user_id": account.external_user_id,
                 "username": account.username,
                 "score": score,
+                "threshold": model.bundle["threshold"] if score is not None else None,
+                **account_context(account, posts),
                 "decision": decision,
                 "model_version": status["model_version"],
                 "feature_version": (model.bundle or {}).get("feature_version", FEATURE_VERSION),

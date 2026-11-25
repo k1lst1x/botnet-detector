@@ -2,9 +2,9 @@
 {% load groups %}
 {% block title %}Группа {{ group.group_id }}{% endblock %}
 {% block content %}
-<section class="head"><div><p class="eyebrow">группа · анализ {{ group.source_job.job_id|truncatechars:13 }}</p><h1>Группа {{ group.group_id }}</h1>
+<section class="head"><div><p class="eyebrow">группа · проверка {{ group.source_job.created_at|date:"d.m.Y H:i" }}</p><h1>Группа {{ group.group_id }}</h1>
 <p>{% if group.flagged %}<span class="tag bot">отмечена: участники в приоритетной очереди</span>{% else %}<span class="tag">не отмечена: связь слабая или группа мала</span>{% endif %}</p></div>
-<a href="{% url 'engine_groups' %}">Все группы</a></section>
+<a href="{% url 'engine_groups' %}" class="btn ghost">Все группы</a></section>
 <div class="stats">
 <div class="stat"><span class="k">Участников</span><span class="v">{{ group.size }}</span></div>
 <div class="stat"><span class="k">Средняя сила связи</span><span class="v">{{ group.mean_weight|floatformat:2 }}</span></div>

@@ -1,5 +1,7 @@
 from django.db import models
 
+from .presentation import JOB_ERRORS, JOB_KINDS, JOB_STATUSES, account_card
+
 LABELS = [("bot", "bot"), ("human", "human"), ("unknown", "unknown")]
 
 
@@ -10,10 +12,28 @@ class EngineJob(models.Model):
     kind = models.CharField(max_length=32)
     status = models.CharField(max_length=32, default='queued')
     error = models.CharField(max_length=64, blank=True)
+    title = models.CharField(max_length=200, blank=True)  # file name or search query
+    source = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='analyses')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-created_at']
+
+    @property
+    def is_active(self):
+        return self.status not in ('completed', 'failed')
+
+    @property
+    def kind_label(self):
+        return JOB_KINDS.get(self.kind, self.kind)
+
+    @property
+    def status_label(self):
+        return JOB_STATUSES.get(self.status, self.status)
+
+    @property
+    def error_label(self):
+        return JOB_ERRORS.get(self.error, self.error)
 
 
 class EngineAccount(models.Model):
@@ -31,11 +51,17 @@ class EngineAccount(models.Model):
     queue = models.CharField(max_length=16, blank=True)
     group = models.ForeignKey('EngineGroup', null=True, blank=True, on_delete=models.SET_NULL, related_name='accounts')
     coordination_score = models.FloatField(null=True, blank=True)
+    details = models.JSONField(default=dict, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-updated_at']
         constraints = [models.UniqueConstraint(fields=['owner', 'platform', 'external_user_id'], name='crm_owner_platform_external')]
+
+    @property
+    def card(self):
+        return account_card(self.details, platform=self.platform, external_user_id=self.external_user_id,
+                            username=self.username, decision=self.decision, score=self.score, queue=self.queue)
 
 
 class EngineGroup(models.Model):
